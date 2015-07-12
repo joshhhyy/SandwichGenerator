@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: #E3F2FD;
+}
+
+.tickboxes { 
+  position: absolute;
+  top: 300px;
+  left: 230px;
+  background-color: white;
+  color: black;
+  width: 200px;
+  height: 100px;
+
+}
+
+li {
+  list-style: none;
+}
