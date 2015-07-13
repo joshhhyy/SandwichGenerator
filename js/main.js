@@ -27,6 +27,7 @@ app.init = function() {
   app.addBox();
   // app.addSphere();
   app.addTriangle();
+  app.addCylinder();
   app.animate();
   // app.renderer.render(SCENE, CAMERA)
   console.log(app.renderer)
@@ -92,8 +93,8 @@ app.addTriangle = function() {
   var B = new THREE.Vector2( 10, 3 );
   var C = new THREE.Vector2( 5, 15 );
 
-  var height = 12;                   
-  var geometry = new PrismGeometry( [ A, B, C ], height ); 
+  var height = 12;
+  var geometry = new PrismGeometry( [ A, B, C ], height );
 
   var material = new THREE.MeshBasicMaterial({ 
     // wireframe: true, 
@@ -106,6 +107,24 @@ app.addTriangle = function() {
 // 
   app.scene.add( prism1 );
 }
+
+
+
+
+app.addCylinder = function () {
+  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 0.2, 32);
+  var cylinderMaterial = new THREE.MeshBasicMaterial( {
+    // color: 0x1A237E,
+    map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg'),
+    shading: THREE.SmoothShading
+    // wireframe: true,
+    // wireframeLinewidth: 5
+  });
+
+app.cylinder = new THREE.Mesh (cylinderShape, cylinderMaterial );
+app.scene.add( app.cylinder );
+}
+
 
 
 
@@ -136,7 +155,7 @@ window.onload = app.init;
 
 window.addEventListener('resize', function() {
   app.width = window.innerWidth;
-  app.height = window.innerHeight; 
+  app.height = window.innerHeight;
 
   app.camera.aspect = app.width / app.height;
   app.camera.updateProjectionMatrix();
