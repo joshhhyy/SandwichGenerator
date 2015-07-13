@@ -22,7 +22,7 @@ app.init = function() {
   app.renderer.setClearColor(0xFFFFFF, 1);
 
 
-  app.light = new THREE.DirectionalLight( 0xffffff );
+  app.light = new THREE.DirectionalLight( 0xFFFFFF);
   app.light.position.set( 0, 1, 1 ).normalize();
   app.scene.add(app.light);
 
@@ -124,7 +124,7 @@ app.addTriangle = function() {
 
 
 app.addCylinder = function () {
-  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 1.5, 800);
+  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 0.5, 800);
   var cylinderMaterial = new THREE.MeshPhongMaterial({
     color: 0xFFFFaF,
     map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg'),
@@ -149,7 +149,7 @@ app.animate = function() {
   app.cube.rotation.y += 0.01;
   app.cube.rotation.z += 0.01;
 
-  app.cylinder.rotation.y += 0.02;
+  // app.cylinder.rotation.y += 0.02;
 
   // app.sphere.rotation.x += 0.01;
   // app.sphere.rotation.y += 0.05;
