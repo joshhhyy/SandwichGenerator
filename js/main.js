@@ -27,6 +27,7 @@ app.init = function() {
   app.addBox();
   // app.addSphere();
   app.addTriangle();
+  app.addCylinder();
   app.animate();
   // app.renderer.render(SCENE, CAMERA)
   console.log(app.renderer)
@@ -62,6 +63,8 @@ app.addSphere = function() {
 
   app.scene.add(app.sphere)
 }
+
+
 
 app.addTriangle = function() {
   PrismGeometry = function ( vertices, height ) {
@@ -110,17 +113,15 @@ app.addTriangle = function() {
 
 app.addCylinder = function () {
   var cylinderShape = new THREE.CylinderGeometry( 5, 5, 0.2, 32);
+
   var cylinderMaterial = new THREE.MeshBasicMaterial( {
-    color: 0x1A237E,
-    wireframe: true
+    // wireframe: true,
+    map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
   });
 
 app.cylinder = new THREE.Mesh (cylinderShape, cylinderMaterial );
 app.scene.add( app.cylinder );
 }
-
-
-
 
 
 app.animate = function() {
