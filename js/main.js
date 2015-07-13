@@ -28,7 +28,8 @@ app.init = function() {
 
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
-  document.body.appendChild(app.renderer.domElement); // Throw what the renderer is looking at on the page
+  document.body.appendChild(app.renderer.domElement);
+  // Throw what the renderer is looking at on the page
   app.addBox();
   app.addSphere();
   app.addTriangle();
@@ -53,6 +54,8 @@ app.addBox = function() {
 
   app.scene.add(app.cube);
 }
+
+
 
 app.addSphere = function() {
   var shape = new THREE.SphereGeometry(6, 16, 16);
