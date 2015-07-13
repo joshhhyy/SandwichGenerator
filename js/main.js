@@ -40,7 +40,7 @@ app.init = function() {
 }
 
 app.addBox = function() {
-  var shape = new THREE.BoxGeometry(50, 50, 5) 
+  var shape = new THREE.BoxGeometry(50, 50, 5)
   // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
 
   var material = new THREE.MeshBasicMaterial({
@@ -70,6 +70,8 @@ app.addSphere = function() {
 
   app.scene.add(app.sphere)
 }
+
+
 
 app.addTriangle = function() {
   PrismGeometry = function ( vertices, height ) {
@@ -105,8 +107,8 @@ app.addTriangle = function() {
   texture.repeat.set( 1, 1 );
 
 
-  var material = new THREE.MeshBasicMaterial({ 
-    // wireframe: true, 
+  var material = new THREE.MeshBasicMaterial({
+    // wireframe: true,
     // wireframeLinewidth: 100,
     map: texture
   });
@@ -116,7 +118,7 @@ app.addTriangle = function() {
   app.prism1.material.map.wrapT = THREE.ClampToEdgeWrapping;
   texture.minFilter = THREE.LinearFilter;
   app.prism1.rotation.x = -Math.PI  /  2;
-// 
+//
   app.scene.add( app.prism1 );
 }
 
@@ -137,9 +139,6 @@ app.addCylinder = function () {
   app.scene.add( app.cylinder );
 
 }
-
-
-
 
 
 app.animate = function() {
