@@ -43,7 +43,7 @@ app.init = function() {
 
 }
 
-app.addBox = function() {
+app.addBox = function(ingredient) {
   var shape = new THREE.BoxGeometry(50, 50, 5)
   // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
 
@@ -54,8 +54,10 @@ app.addBox = function() {
 
   app.cube = new THREE.Mesh(shape, material)
 
-
   app.scene.add(app.cube);
+
+  // var modifier = new THREE.SubdivisionModifier( subdiv );
+  //modifier.modify( smooth );
 }
 
 app.addSphere = function() {
