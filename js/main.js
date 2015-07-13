@@ -64,30 +64,45 @@ app.addSphere = function() {
 }
 
 app.addTriangle = function() {
-  var triangleGeometry = new THREE.Geometry(); 
-  triangleGeometry.vertices.push(new THREE.Vector3(-1.0,  1.5, 0.95));  
-  triangleGeometry.vertices.push(new THREE.Vector3(-1.0, -1.5, 0.95)); 
-  triangleGeometry.vertices.push(new THREE.Vector3( 1.0, -1.5, 0.95));
-  triangleGeometry.vertices.push(new THREE.Vector3(-1.0,  1.5, 1.2));  
-  triangleGeometry.vertices.push(new THREE.Vector3(-1.0, -1.5, 10)); 
-  triangleGeometry.vertices.push(new THREE.Vector3( 1.0, -1.5, 1.2));
+  PrismGeometry = function ( vertices, height ) {
 
-  triangleGeometry.faces.push(new THREE.Face3(0, 1, 2));
-  triangleGeometry.faces.push(new THREE.Face3(3, 4, 5));
-  // Points 1,4,3 and 6 form a rectangle which I'm trying to construct using triangles 0,2,5 and 0,3,5
-  triangleGeometry.faces.push(new THREE.Face3(0, 2, 5));
-  triangleGeometry.faces.push(new THREE.Face3(0, 3, 5));
+    var Shape = new THREE.Shape();
 
-  var triangleMaterial = new THREE.MeshBasicMaterial({ 
-  color: 0xEC407A, 
-  wireframe: true,
-  side:THREE.DoubleSide 
+    ( function f( ctx ) {
+
+        ctx.moveTo( vertices[0].x, vertices[0].y );
+        for (var i=1; i < vertices.length; i++) {
+            ctx.lineTo( vertices[i].x, vertices[i].y );
+        }
+        ctx.lineTo( vertices[0].x, vertices[0].y );
+
+    } )( Shape );
+
+    var settings = { };
+    settings.amount = height;
+    settings.bevelEnabled = false;
+    THREE.ExtrudeGeometry.call( this, Shape, settings );
+
+  };
+
+  PrismGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
+
+  var A = new THREE.Vector2( 0, 0 );
+  var B = new THREE.Vector2( 30, 10 );
+  var C = new THREE.Vector2( 20, 50 );
+
+  var height = 12;                   
+  var geometry = new PrismGeometry( [ A, B, C ], height ); 
+
+  var material = new THREE.MeshBasicMaterial({ 
+    wireframe: true, 
+    map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg'),
   });
 
-  var triangleMesh = new THREE.Mesh(triangleGeometry, triangleMaterial); 
-  triangleMesh.position.set(1, 0.0, 0.0); 
+  var prism1 = new THREE.Mesh( geometry, material );
+  prism1.rotation.x = -Math.PI  /  2;
 
-  app.scene.add(triangleMesh); 
+  app.scene.add( prism1 );
 }
 
 
@@ -130,27 +145,6 @@ window.addEventListener('resize', function() {
 
 
 
-
-
-
-
-
-
-var verticesOfCube = [
-    -1,-1,-1,    1,-1,-1,    1, 1,-1,    -1, 1,-1,
-    -1,-1, 1,    1,-1, 1,    1, 1, 1,    -1, 1, 1,
-];
-
-var indicesOfFaces = [
-    2,1,0,    0,3,2,
-    0,4,7,    7,3,0,
-    0,1,5,    5,4,0,
-    1,2,6,    6,5,1,
-    2,3,7,    7,6,2,
-    4,5,6,    6,7,4
-];
-
-var geometry = new THREE.PolyhedronGeometry( verticesOfCube, indicesOfFaces, 6, 2 );
 
 
 
