@@ -21,10 +21,14 @@ app.init = function() {
   app.renderer.setSize(app.width, app.height);
   app.renderer.setClearColor(0xFFFFFF, 1);
 
+  app.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1 );
+  //  THREE.HemisphereLight(SKY COLOR, GROUND COLOR, INTENSITY)
+  app.scene.add(app.hemiLight)
 
-  app.light = new THREE.DirectionalLight( 0xFFFFFF);
-  app.light.position.set( 0, 1, 1 ).normalize();
-  app.scene.add(app.light);
+
+  // app.light = new THREE.DirectionalLight( 0xFFFFFF);
+  // app.light.position.set( 0, 1, 0 ).normalize();
+  // app.scene.add(app.light);
 
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
@@ -34,7 +38,7 @@ app.init = function() {
   app.addTriangle();
   app.addCylinder();
   app.animate();
-  // app.renderer.render(SCENE, CAMERA)
+  app.renderer.render(app.scene, app.camera)
   console.log(app.renderer)
 
 }
@@ -43,13 +47,13 @@ app.addBox = function() {
   var shape = new THREE.BoxGeometry(50, 50, 5)
   // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
 
-  var material = new THREE.MeshBasicMaterial({
+  var material = new THREE.MeshPhongMaterial({
     // color: 0x1A237E,
     map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
   });
 
   app.cube = new THREE.Mesh(shape, material)
-  app.cube.position.x = app.width / 2
+
 
   app.scene.add(app.cube);
 }
@@ -98,10 +102,10 @@ app.addTriangle = function() {
   PrismGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
 
   var A = new THREE.Vector2( 0, 0 );
-  var B = new THREE.Vector2( 10, 3 );
-  var C = new THREE.Vector2( 5, 15 );
+  var B = new THREE.Vector2( 30, 10 );
+  var C = new THREE.Vector2( 50, 70 );
 
-  var height = 12;
+  var height = 32;
   var geometry = new PrismGeometry( [ A, B, C ], height );
   var texture = THREE.ImageUtils.loadTexture('images/breadtexture.jpg');
   texture.repeat.set( 1, 1 );
@@ -126,7 +130,7 @@ app.addTriangle = function() {
 
 
 app.addCylinder = function () {
-  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 0.5, 800);
+  var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
   var cylinderMaterial = new THREE.MeshPhongMaterial({
     color: 0xFFFFaF,
     map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg'),
