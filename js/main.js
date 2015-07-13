@@ -19,13 +19,18 @@ app.init = function() {
 
   app.renderer = new THREE.WebGLRenderer();
   app.renderer.setSize(app.width, app.height);
-  app.renderer.setClearColor(0xE3F2FD, 1);
+  app.renderer.setClearColor(0xFFFFFF, 1);
+
+
+  app.light = new THREE.DirectionalLight( 0xffffff );
+  app.light.position.set( 0, 1, 1 ).normalize();
+  app.scene.add(app.light);
 
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
   document.body.appendChild(app.renderer.domElement); // Throw what the renderer is looking at on the page
   app.addBox();
-  // app.addSphere();
+  app.addSphere();
   app.addTriangle();
   app.addCylinder();
   app.animate();
@@ -35,7 +40,7 @@ app.init = function() {
 }
 
 app.addBox = function() {
-  var shape = new THREE.BoxGeometry(50, 50, 2)
+  var shape = new THREE.BoxGeometry(50, 50, 5)
   // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
 
   var material = new THREE.MeshBasicMaterial({
@@ -44,22 +49,24 @@ app.addBox = function() {
   });
 
   app.cube = new THREE.Mesh(shape, material)
+  app.cube.position.x = app.width / 2
 
   app.scene.add(app.cube);
 }
 
 app.addSphere = function() {
-  var shape = new THREE.SphereGeometry(50, 16, 16);
+  var shape = new THREE.SphereGeometry(6, 16, 16);
   // THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS)
 
-  var material = new THREE.MeshBasicMaterial({
-    color: 0xEC407A,
-    wireframe: true,
+  var material = new THREE.MeshPhongMaterial({
+    // color: 0xEC407A,
+    // wireframe: true,
     wireframeLinewidth: 4,
-    map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
+    map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg')
   });
 
   app.sphere = new THREE.Mesh(shape, material)
+  app.sphere.position.y = -209
 
   app.scene.add(app.sphere)
 }
@@ -91,36 +98,46 @@ app.addTriangle = function() {
   PrismGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
 
   var A = new THREE.Vector2( 0, 0 );
-  var B = new THREE.Vector2( 30, 10 );
-  var C = new THREE.Vector2( 20, 50 );
+  var B = new THREE.Vector2( 10, 3 );
+  var C = new THREE.Vector2( 5, 15 );
 
   var height = 12;
   var geometry = new PrismGeometry( [ A, B, C ], height );
+  var texture = THREE.ImageUtils.loadTexture('images/breadtexture.jpg');
+  texture.repeat.set( 1, 1 );
+
 
   var material = new THREE.MeshBasicMaterial({
-    wireframe: true,
-    map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg'),
+    // wireframe: true,
+    // wireframeLinewidth: 100,
+    map: texture
   });
 
-  var prism1 = new THREE.Mesh( geometry, material );
-  prism1.rotation.x = -Math.PI  /  2;
-
-  app.scene.add( prism1 );
+  app.prism1 = new THREE.Mesh( geometry, material );
+  app.prism1.material.map.wrapS = THREE.ClampToEdgeWrapping;
+  app.prism1.material.map.wrapT = THREE.ClampToEdgeWrapping;
+  texture.minFilter = THREE.LinearFilter;
+  app.prism1.rotation.x = -Math.PI  /  2;
+//
+  app.scene.add( app.prism1 );
 }
 
 
 
 
 app.addCylinder = function () {
-  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 0.2, 32);
-
-  var cylinderMaterial = new THREE.MeshBasicMaterial( {
+  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 1.5, 800);
+  var cylinderMaterial = new THREE.MeshPhongMaterial({
+    color: 0xFFFFaF,
+    map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg'),
+    // shading: THREE.SmoothShading
     // wireframe: true,
-    map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
+    // wireframeLinewidth: 5
   });
+  // debugger;
+  app.cylinder = new THREE.Mesh( cylinderShape, cylinderMaterial );
+  app.scene.add( app.cylinder );
 
-app.cylinder = new THREE.Mesh (cylinderShape, cylinderMaterial );
-app.scene.add( app.cylinder );
 }
 
 
@@ -130,6 +147,8 @@ app.animate = function() {
   app.cube.rotation.x += 0.01;
   app.cube.rotation.y += 0.01;
   app.cube.rotation.z += 0.01;
+
+  app.cylinder.rotation.y += 0.02;
 
   // app.sphere.rotation.x += 0.01;
   // app.sphere.rotation.y += 0.05;
@@ -141,12 +160,14 @@ app.animate = function() {
 
 window.onload = app.init;
 
-window.addEventListener('mousemove', function(event) {
-  // console.log(event);
-  app.cube.position.x = event.clientX - (app.width / 2);
-  app.cube.position.y = ( event.clientY - (app.height / 2) ) * -1;
+// window.addEventListener('mousemove', function(event) {
+//   // console.log(event);
+//   app.cube.position.x = event.clientX - (app.width / 2);
+//   app.cube.position.y = ( event.clientY - (app.height / 2) ) * -1;
 
-});
+//   app.sphere.position.y = ( event.clientY - (app.height / 2) ) * -1
+
+// });
 
 window.addEventListener('resize', function() {
   app.width = window.innerWidth;
