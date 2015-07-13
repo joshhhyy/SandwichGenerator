@@ -124,7 +124,7 @@ app.addTriangle = function() {
 
 
 app.addCylinder = function () {
-  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 1.5, 800);
+  var cylinderShape = new THREE.CylinderGeometry( 5, 5, 1.5, 800); d 
   var cylinderMaterial = new THREE.MeshPhongMaterial({
     color: 0xFFFFaF,
     map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg'),
