@@ -34,7 +34,7 @@ app.init = function() {
 }
 
 app.addBox = function() {
-  var shape = new THREE.BoxGeometry(50, 50, 2) 
+  var shape = new THREE.BoxGeometry(50, 50, 5) 
   // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
 
   var material = new THREE.MeshBasicMaterial({
@@ -43,6 +43,7 @@ app.addBox = function() {
   });
 
   app.cube = new THREE.Mesh(shape, material)
+  app.cube.position.x = app.width / 4
 
   app.scene.add(app.cube);
 }
@@ -88,20 +89,21 @@ app.addTriangle = function() {
   PrismGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
 
   var A = new THREE.Vector2( 0, 0 );
-  var B = new THREE.Vector2( 30, 10 );
-  var C = new THREE.Vector2( 20, 50 );
+  var B = new THREE.Vector2( 10, 3 );
+  var C = new THREE.Vector2( 5, 15 );
 
   var height = 12;                   
   var geometry = new PrismGeometry( [ A, B, C ], height ); 
 
   var material = new THREE.MeshBasicMaterial({ 
-    wireframe: true, 
-    map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg'),
+    // wireframe: true, 
+    // wireframeLinewidth: 100,
+    map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
   });
 
   var prism1 = new THREE.Mesh( geometry, material );
   prism1.rotation.x = -Math.PI  /  2;
-
+// 
   app.scene.add( prism1 );
 }
 
@@ -125,12 +127,12 @@ app.animate = function() {
 
 window.onload = app.init;
 
-window.addEventListener('mousemove', function(event) {
-  // console.log(event);
-  app.cube.position.x = event.clientX - (app.width / 2);
-  app.cube.position.y = ( event.clientY - (app.height / 2) ) * -1;
+// window.addEventListener('mousemove', function(event) {
+//   // console.log(event);
+//   app.cube.position.x = event.clientX - (app.width / 2);
+//   app.cube.position.y = ( event.clientY - (app.height / 2) ) * -1;
 
-});
+// });
 
 window.addEventListener('resize', function() {
   app.width = window.innerWidth;
