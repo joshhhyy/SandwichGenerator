@@ -62,11 +62,11 @@ app.box = function(status, ingredient) {
         map: THREE.ImageUtils.loadTexture('images/buttertexture.jpg')
       });
 
-      app.cube = new THREE.Mesh(shape, material);
+      app.butter = new THREE.Mesh(shape, material);
 
-      app.scene.add(app.cube);
+      app.scene.add(app.butter);
     } else {
-      app.scene.remove(app.cube);
+      app.scene.remove(app.butter);
     }
     break;
   case 'Cheese': 
@@ -78,11 +78,11 @@ app.box = function(status, ingredient) {
         map: THREE.ImageUtils.loadTexture('images/cheesetexture.jpg')
       });
 
-      app.cube = new THREE.Mesh(shape, material);
+      app.cheese = new THREE.Mesh(shape, material);
 
-      app.scene.add(app.cube);
+      app.scene.add(app.cheese);
     } else {
-      app.scene.remove(app.cube);
+      app.scene.remove(app.cheese);
     }
   }
 }
@@ -180,10 +180,10 @@ app.cylinder = function (status, ingredient) {
         // wireframeLinewidth: 5
       });
       // debugger;
-      app.tube = new THREE.Mesh( cylinderShape, cylinderMaterial );
-      app.scene.add(app.tube);
+      app.tomato = new THREE.Mesh( cylinderShape, cylinderMaterial );
+      app.scene.add(app.tomato);
     } else {
-      app.scene.remove(app.tube);
+      app.scene.remove(app.tomato);
     }
     break;
   case 'Ham': 
@@ -197,10 +197,10 @@ app.cylinder = function (status, ingredient) {
         // wireframeLinewidth: 5
       });
       // debugger;
-      app.tube = new THREE.Mesh( cylinderShape, cylinderMaterial );
-      app.scene.add(app.tube);
+      app.ham = new THREE.Mesh( cylinderShape, cylinderMaterial );
+      app.scene.add(app.ham);
     } else {
-      app.scene.remove(app.tube)
+      app.scene.remove(app.ham);
     }
     break;
   }
@@ -341,7 +341,7 @@ $('.ingredients input:checkbox').on('click', function() {
   var ingredient = $(this).val();
   console.log(ingredient);
   if ($(this).is(':checked')) {
-    app.addCylinder('add', ingredient);
+    addShape(ingredient)('add', ingredient);
   } else {
     addShape(ingredient)('remove', ingredient);
   } 
