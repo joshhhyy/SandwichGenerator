@@ -280,6 +280,7 @@ app.text = function() {
   }));
 
   var material = new THREE.MeshPhongMaterial({
+    color: 0x1BBC9B,
     bevelEnabled: true,
     bevelThickness: 2,
     bevelSize: 2
