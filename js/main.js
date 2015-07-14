@@ -35,9 +35,7 @@ app.init = function() {
   // app.light.position.set( 0, 1, 0 ).normalize();
   // app.scene.add(app.light);
 
-  app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
-
-  document.body.appendChild(app.renderer.domElement);
+  app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
 
   // app.addBox();
