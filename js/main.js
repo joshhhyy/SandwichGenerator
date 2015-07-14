@@ -38,6 +38,7 @@ app.init = function() {
   app.addSphere();
   app.addTriangle();
   app.addCylinder();
+  app.addBread();
   app.animate();
   app.renderer.render(app.scene, app.camera)
   console.log(app.renderer)
@@ -147,8 +148,46 @@ app.addCylinder = function () {
 
 }
 
+app.addBread = function () {
+  app.group = new THREE.Group();
+  app.group.position.y = 50;
 
-app.add
+  app.scene.add( app.group );
+
+  function addShape(color, x, y, z, rx, ry, rz, s) {
+    var breadpts = [];
+    breadpts.push(new THREE.Vector2(70, 20));
+    breadpts.push(new THREE.Vector2(80, 90));
+    breadpts.push(new THREE.Vector2(-30, 70));
+    breadpts.push(new THREE.Vector2(-10, 10));
+
+    var breadShape = new THREE.Shape();
+    breadShape.moveTo(0, 0);
+    breadShape.splineThru(breadpts);
+
+    var breadExtrude = {
+      amount: 8,
+      bevelEnabled: true,
+      bevelSegments: 2,
+      steps: 4,
+      bevelSize: 1,
+      bevelThickness: 1
+    };
+
+    var breadGeometry = new THREE.ExtrudeGeometry(breadShape, breadExtrude);
+    console.log('hai');
+    var mesh = new THREE.Mesh(breadGeometry, new THREE.MeshPhongMaterial({
+      color: color
+    }));
+
+    app.group.add(mesh);
+    // app.scene.add( mesh );
+
+  };
+  addShape(0x808080, -50, -100, 0, 0, 0, 0, 1);
+  // addShape(0x808080, -70, -10, 0, 0, 0, 0, 1);
+};
+
 
 
 app.animate = function() {
