@@ -1,18 +1,17 @@
 var app = app || {};
-
 THREE.ImageUtils.crossOrigin = '';
 
 app.init = function() {
   console.log("App Initialized.")
-
   app.width = window.innerWidth;
   app.height = window.innerHeight;
 
-  app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 1000 );
+  app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 2000 );
   // THREE.PerspectiveCamera(FIELD OF VIEW, RATIO, NEAR, FAR)
   // Near and Far specify the range which things get rendered. (in 'units')
 
   app.camera.position.z = 200;
+  // app.camera.position.set( 0, 150, 750 );
 
   app.scene = new THREE.Scene();
   app.scene.add(app.camera);
@@ -21,17 +20,22 @@ app.init = function() {
   app.renderer.setSize(app.width, app.height);
   app.renderer.setClearColor(0xFFFFFF, 1);
 
+  app.group = new THREE.Group();
+  app.group.position.y = 30;
+  app.scene.add( app.group );
+  // app.group = new THREE.Group();
+  // app.group.position.y = 50;
+  // app.scene.add( app.group );
+
   app.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1 );
   //  THREE.HemisphereLight(SKY COLOR, GROUND COLOR, INTENSITY)
   app.scene.add(app.hemiLight)
-
 
   // app.light = new THREE.DirectionalLight( 0xFFFFFF);
   // app.light.position.set( 0, 1, 0 ).normalize();
   // app.scene.add(app.light);
 
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
-
 
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
@@ -41,15 +45,10 @@ app.init = function() {
   app.addCylinder();
   app.addBread();
   app.addRing();
+  app.addBacon();
   app.animate();
   // app.renderer.render(app.scene, app.camera)
 }
-
-
-
-
-
-
 
 app.addBox = function(ingredient) {
   var shape = new THREE.BoxGeometry(50, 50, 5)
@@ -63,14 +62,7 @@ app.addBox = function(ingredient) {
   app.cube = new THREE.Mesh(shape, material)
 
   app.scene.add(app.cube);
-
 }
-
-
-
-
-
-
 
 app.addSphere = function() {
   var shape = new THREE.SphereGeometry(6, 40, 16);
@@ -87,11 +79,6 @@ app.addSphere = function() {
 
   app.scene.add(app.sphere)
 }
-
-
-
-
-
 
 app.addTriangle = function() {
   PrismGeometry = function ( vertices, height ) {
@@ -138,15 +125,10 @@ app.addTriangle = function() {
   app.prism1.material.map.wrapT = THREE.ClampToEdgeWrapping;
   texture.minFilter = THREE.LinearFilter;
   app.prism1.rotation.x = -Math.PI  /  2;
-//
+
+  // app.PrismGeometry = new THREE.Mesh(shape, texture);
   app.scene.add( app.prism1 );
 }
-
-
-
-
-
-
 
 app.addCylinder = function () {
   var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
@@ -160,24 +142,17 @@ app.addCylinder = function () {
   // debugger;
   app.cylinder = new THREE.Mesh( cylinderShape, cylinderMaterial );
   app.scene.add( app.cylinder );
-
 }
 
-
-
-
-
 app.addBread = function () {
-  app.group = new THREE.Group();
-  app.group.position.y = 50;
-  app.scene.add( app.group );
 
   function addShape(color, x, y, z, rx, ry, rz, s) {
     var breadpts = [];
     breadpts.push(new THREE.Vector2(70, 20));
     breadpts.push(new THREE.Vector2(80, 90));
-    breadpts.push(new THREE.Vector2(-30, 70));
-    breadpts.push(new THREE.Vector2(-10, 10));
+    breadpts.push(new THREE.Vector2(-30, 80));
+    breadpts.push(new THREE.Vector2(-20, -2));
+    // breadpts.push(new THREE.Vector2(10, 0));
 
     var breadShape = new THREE.Shape();
     breadShape.moveTo(0, 0);
@@ -206,10 +181,6 @@ app.addBread = function () {
   // addShape(0x808080, -70, -10, 0, 0, 0, 0, 1);
 };
 
-
-
-
-
 app.addRing = function() {
   var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
   var material = new THREE.MeshBasicMaterial({
@@ -219,11 +190,50 @@ app.addRing = function() {
   app.torus = new THREE.Mesh( geometry, material );
   // app.torus.position.y = 300;
   app.scene.add( app.torus );
-
 }
 
+app.addBacon = function() {
+  var nsControlPoints = [
+    [
+      new THREE.Vector4 ( -200, -200, 100, 1 ),
+      new THREE.Vector4 ( -200, -100, -200, 1 ),
+      new THREE.Vector4 ( -200, 100, 250, 1 ),
+      new THREE.Vector4 ( -200, 200, -100, 1 )
+    ],
+    [
+      new THREE.Vector4 ( 0, -200, 0, 1 ),
+      new THREE.Vector4 ( 0, -100, -100, 5 ),
+      new THREE.Vector4 ( 0, 100, 150, 5 ),
+      new THREE.Vector4 ( 0, 200, 0, 1 )
+    ],
+    [
+      new THREE.Vector4 ( 200, -200, -100, 1 ),
+      new THREE.Vector4 ( 200, -100, 200, 1 ),
+      new THREE.Vector4 ( 200, 100, -250, 1 ),
+      new THREE.Vector4 ( 200, 200, 100, 1 )
+    ]
+  ];
+  var degree1 = 2;
+  var degree2 = 3;
+  var knots1 = [0, 0, 0, 1, 1, 1];
+  var knots2 = [0, 0, 0, 0, 1, 1, 1, 1];
+  var nurbsSurface = new THREE.BaconSurface(degree1, degree2, knots1, knots2, nsControlPoints);
 
+  var map = THREE.ImageUtils.loadTexture( 'images/bacon.jpg' );
+  map.wrapS = map.wrapT = THREE.RepeatWrapping;
+  map.anisotropy = 16;
 
+  getSurfacePoint = function(u, v) {
+    return nurbsSurface.getPoint(u, v);
+  };
+
+  var geometry = new THREE.ParametricGeometry( getSurfacePoint, 20, 20 );
+  var material = new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } );
+  app.bacon = new THREE.Mesh( geometry, material );
+  app.bacon.position.set( - 200, 100, 0 );
+  app.bacon.scale.multiplyScalar( 1 );
+  app.group.add( app.bacon );
+};
 
 app.animate = function() {
   requestAnimationFrame(app.animate);
@@ -240,8 +250,6 @@ app.animate = function() {
 
   app.renderer.render(app.scene, app.camera);
 }
-
-
 
 window.onload = app.init;
 
@@ -263,10 +271,6 @@ window.addEventListener('resize', function() {
 
   app.renderer.setSize(app.width, app.height);
 })
-
-
-
-
 // click to bring ingredients. jQuery
 
 $('.ingredients input:checkbox').on('click', function() {
