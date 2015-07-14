@@ -40,7 +40,9 @@ app.init = function() {
   // app.addTriangle();
   // app.addCylinder();
   // app.addBread();
+  // app.addBacon();
   // app.addTorus();
+  app.text();
   app.animate();
   // app.renderer.render(app.scene, app.camera)
 }
@@ -270,6 +272,22 @@ app.torus = function(status) {
     app.scene.remove(app.onion);
   }
 
+}
+
+app.text = function() {
+  var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
+    size: 30,
+  }));
+
+  var material = new THREE.MeshPhongMaterial({
+    bevelEnabled: true,
+    bevelThickness: 2,
+    bevelSize: 2
+  });
+
+  app.heading = new THREE.Mesh(geometry, material);
+
+  app.scene.add(app.heading);
 }
 
 
