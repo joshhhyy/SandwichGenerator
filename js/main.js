@@ -32,6 +32,7 @@ app.init = function() {
 
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
+<<<<<<< HEAD
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
   app.addBox();
@@ -39,6 +40,14 @@ app.init = function() {
   app.addTriangle();
   app.addCylinder();
   app.addBread();
+=======
+  document.body.appendChild(app.renderer.domElement); // Throw what the renderer is looking at on the page
+  // app.addBox();
+  // app.addSphere();
+  app.addRing();
+  // app.addTriangle();
+  // app.addCylinder();
+>>>>>>> e86f1acda7e86eab982b7da86d291a754f0813e2
   app.animate();
   app.renderer.render(app.scene, app.camera)
   console.log(app.renderer)
@@ -63,7 +72,7 @@ app.addBox = function(ingredient) {
 
 
 app.addSphere = function() {
-  var shape = new THREE.SphereGeometry(6, 16, 16);
+  var shape = new THREE.SphereGeometry(6, 40, 16);
   // THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS)
 
   var material = new THREE.MeshPhongMaterial({
@@ -74,12 +83,9 @@ app.addSphere = function() {
   });
 
   app.sphere = new THREE.Mesh(shape, material)
-  app.sphere.position.y = -209
 
   app.scene.add(app.sphere)
 }
-
-
 
 app.addTriangle = function() {
   PrismGeometry = function ( vertices, height ) {
@@ -148,6 +154,7 @@ app.addCylinder = function () {
 
 }
 
+<<<<<<< HEAD
 app.addBread = function () {
   app.group = new THREE.Group();
   app.group.position.y = 50;
@@ -188,14 +195,25 @@ app.addBread = function () {
   // addShape(0x808080, -70, -10, 0, 0, 0, 0, 1);
 };
 
+=======
+app.addRing = function() {
+  var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
+  var material = new THREE.MeshBasicMaterial({ 
+    color: 0xafafaf,
+    map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
+  });
+  app.torus = new THREE.Mesh( geometry, material );
+  app.scene.add( app.torus );
+}
+>>>>>>> e86f1acda7e86eab982b7da86d291a754f0813e2
 
 
 app.animate = function() {
   requestAnimationFrame(app.animate);
 
-  app.cube.rotation.x += 0.01;
-  app.cube.rotation.y += 0.01;
-  app.cube.rotation.z += 0.01;
+  // app.cube.rotation.x += 0.01;
+  // app.cube.rotation.y += 0.01;
+  // app.cube.rotation.z += 0.01;
 
   // app.cylinder.rotation.y += 0.02;
 
@@ -205,6 +223,7 @@ app.animate = function() {
 
   app.renderer.render(app.scene, app.camera);
 }
+
 
 
 window.onload = app.init;
@@ -228,6 +247,13 @@ window.addEventListener('resize', function() {
   app.renderer.setSize(app.width, app.height);
 })
 
+$('.ingredients input:checkbox').on('click', function() {
+  var ingredient = $(this).val();
+  console.log(ingredient);
+  if ($(this).is(':checked')) {
+    app.addSphere();
+  }
+});
 
 
 
