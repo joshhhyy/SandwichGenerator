@@ -170,6 +170,7 @@ app.animate = function() {
 }
 
 
+
 window.onload = app.init;
 
 // window.addEventListener('mousemove', function(event) {
@@ -191,8 +192,12 @@ window.addEventListener('resize', function() {
   app.renderer.setSize(app.width, app.height);
 })
 
-$('#meatball').on('click', function() {
-  app.addSphere();
+$('.ingredients input:checkbox').on('click', function() {
+  var ingredient = $(this).val();
+  console.log(ingredient);
+  if ($(this).is(':checked')) {
+    app.addSphere();
+  }
 });
 
 
