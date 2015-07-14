@@ -33,10 +33,11 @@ app.init = function() {
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
   document.body.appendChild(app.renderer.domElement); // Throw what the renderer is looking at on the page
-  app.addBox();
-  app.addSphere();
-  app.addTriangle();
-  app.addCylinder();
+  // app.addBox();
+  // app.addSphere();
+  app.addRing();
+  // app.addTriangle();
+  // app.addCylinder();
   app.animate();
   app.renderer.render(app.scene, app.camera)
   console.log(app.renderer)
@@ -59,7 +60,7 @@ app.addBox = function(ingredient) {
 }
 
 app.addSphere = function() {
-  var shape = new THREE.SphereGeometry(6, 16, 16);
+  var shape = new THREE.SphereGeometry(6, 40, 16);
   // THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS)
 
   var material = new THREE.MeshPhongMaterial({
@@ -70,12 +71,9 @@ app.addSphere = function() {
   });
 
   app.sphere = new THREE.Mesh(shape, material)
-  app.sphere.position.y = -209
 
   app.scene.add(app.sphere)
 }
-
-
 
 app.addTriangle = function() {
   PrismGeometry = function ( vertices, height ) {
@@ -144,13 +142,23 @@ app.addCylinder = function () {
 
 }
 
+app.addRing = function() {
+  var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
+  var material = new THREE.MeshBasicMaterial({ 
+    color: 0xafafaf,
+    map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
+  });
+  app.torus = new THREE.Mesh( geometry, material );
+  app.scene.add( app.torus );
+}
+
 
 app.animate = function() {
   requestAnimationFrame(app.animate);
 
-  app.cube.rotation.x += 0.01;
-  app.cube.rotation.y += 0.01;
-  app.cube.rotation.z += 0.01;
+  // app.cube.rotation.x += 0.01;
+  // app.cube.rotation.y += 0.01;
+  // app.cube.rotation.z += 0.01;
 
   // app.cylinder.rotation.y += 0.02;
 
@@ -183,6 +191,9 @@ window.addEventListener('resize', function() {
   app.renderer.setSize(app.width, app.height);
 })
 
+$('#meatball').on('click', function() {
+  app.addSphere();
+});
 
 
 
