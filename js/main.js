@@ -39,45 +39,75 @@ app.init = function() {
 
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
-  app.addBox();
-  app.addSphere();
-  app.addTriangle();
-  app.addCylinder();
-  app.addBread();
-  app.addRing();
-  app.addBacon();
+
+  // app.addBox();
+  // app.addSphere();
+  // app.addTriangle();
+  // app.addCylinder();
+  // app.addBread();
+  // app.addBacon();
+  // app.addTorus();
   app.animate();
   // app.renderer.render(app.scene, app.camera)
 }
 
-app.addBox = function(ingredient) {
-  var shape = new THREE.BoxGeometry(50, 50, 5)
-  // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
 
-  var material = new THREE.MeshPhongMaterial({
-    // color: 0x1A237E,
-    map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
-  });
 
-  app.cube = new THREE.Mesh(shape, material)
+app.box = function(status, ingredient) {
 
-  app.scene.add(app.cube);
+  switch (ingredient) {
+  case 'Butter':
+    if (status === 'add') {
+      var shape = new THREE.BoxGeometry(25, 25, 40)
+      // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
+      var material = new THREE.MeshPhongMaterial({
+        // color: 0x1A237E,
+        map: THREE.ImageUtils.loadTexture('images/buttertexture.jpg')
+      });
+
+      app.butter = new THREE.Mesh(shape, material);
+
+      app.scene.add(app.butter);
+    } else {
+      app.scene.remove(app.butter);
+    }
+    break;
+  case 'Cheese':
+    if (status === 'add') {
+      var shape = new THREE.BoxGeometry(35, 35, 5)
+
+      var material = new THREE.MeshPhongMaterial({
+        // color: 0x1A237E,
+        map: THREE.ImageUtils.loadTexture('images/cheesetexture.jpg')
+      });
+
+      app.cheese = new THREE.Mesh(shape, material);
+
+      app.scene.add(app.cheese);
+    } else {
+      app.scene.remove(app.cheese);
+    }
+  }
 }
 
-app.addSphere = function() {
-  var shape = new THREE.SphereGeometry(6, 40, 16);
-  // THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS)
+app.sphere = function(status) {
+  if (status === 'add') {
+    var shape = new THREE.SphereGeometry(6, 40, 16);
+    // THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS)
 
-  var material = new THREE.MeshPhongMaterial({
-    // color: 0xEC407A,
-    // wireframe: true,
-    wireframeLinewidth: 4,
-    map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg')
-  });
+    var material = new THREE.MeshPhongMaterial({
+      // color: 0xEC407A,
+      // wireframe: true,
+      wireframeLinewidth: 4,
+      map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg')
+    });
 
-  app.sphere = new THREE.Mesh(shape, material)
+    app.ball = new THREE.Mesh(shape, material);
 
-  app.scene.add(app.sphere)
+    app.scene.add(app.ball);
+  } else {
+    app.scene.remove(app.ball);
+  }
 }
 
 app.addTriangle = function() {
@@ -130,23 +160,51 @@ app.addTriangle = function() {
   app.scene.add( app.prism1 );
 }
 
-app.addCylinder = function () {
-  var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
-  var cylinderMaterial = new THREE.MeshPhongMaterial({
-    color: 0xFFFFaF,
-    map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg'),
-    // shading: THREE.SmoothShading
-    // wireframe: true,
-    // wireframeLinewidth: 5
-  });
-  // debugger;
-  app.cylinder = new THREE.Mesh( cylinderShape, cylinderMaterial );
-  app.scene.add( app.cylinder );
+
+
+app.cylinder = function (status, ingredient) {
+  switch (ingredient) {
+  case 'Tomato':
+    if (status === 'add') {
+      var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
+      var cylinderMaterial = new THREE.MeshPhongMaterial({
+        color: 0xFFFFaF,
+        map: THREE.ImageUtils.loadTexture('images/tomatotexture.jpg'),
+        // shading: THREE.SmoothShading
+        // wireframe: true,
+        // wireframeLinewidth: 5
+      });
+      // debugger;
+      app.tomato = new THREE.Mesh( cylinderShape, cylinderMaterial );
+      app.scene.add(app.tomato);
+    } else {
+      app.scene.remove(app.tomato);
+    }
+    break;
+  case 'Ham':
+    if (status === 'add') {
+      var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
+      var cylinderMaterial = new THREE.MeshPhongMaterial({
+        color: 0xFFFFaF,
+        map: THREE.ImageUtils.loadTexture('images/hamtexture.png'),
+        // shading: THREE.SmoothShading
+        // wireframe: true,
+        // wireframeLinewidth: 5
+      });
+      // debugger;
+      app.ham = new THREE.Mesh( cylinderShape, cylinderMaterial );
+      app.scene.add(app.ham);
+    } else {
+      app.scene.remove(app.ham);
+    }
+    break;
+  }
+
 }
 
 app.addBread = function () {
 
-  function addShape(color, x, y, z, rx, ry, rz, s) {
+  var addShape = function(color, x, y, z, rx, ry, rz, s) {
     var breadpts = [];
     breadpts.push(new THREE.Vector2(70, 20));
     breadpts.push(new THREE.Vector2(80, 90));
@@ -159,7 +217,7 @@ app.addBread = function () {
     breadShape.splineThru(breadpts);
 
     var breadExtrude = {
-      amount: 8,
+      amount: 2,
       bevelEnabled: true,
       bevelSegments: 2,
       steps: 4,
@@ -169,11 +227,13 @@ app.addBread = function () {
 
     var breadGeometry = new THREE.ExtrudeGeometry(breadShape, breadExtrude);
     console.log('hai');
-    var mesh = new THREE.Mesh(breadGeometry, new THREE.MeshPhongMaterial({
-      color: color
+    app.bread = new THREE.Mesh(breadGeometry, new THREE.MeshPhongMaterial({
+      color: color,
+      map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
     }));
 
-    app.group.add(mesh);
+    app.bread.position.y = -100
+    app.group.add(app.bread);
     // app.scene.add( mesh );
 
   };
@@ -181,15 +241,20 @@ app.addBread = function () {
   // addShape(0x808080, -70, -10, 0, 0, 0, 0, 1);
 };
 
-app.addRing = function() {
-  var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
-  var material = new THREE.MeshBasicMaterial({
-    color: 0xafafaf,
-    map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
-  });
-  app.torus = new THREE.Mesh( geometry, material );
-  // app.torus.position.y = 300;
-  app.scene.add( app.torus );
+
+app.torus = function(status) {
+  if (status === 'add') {
+    var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xafafaf,
+      map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
+    });
+    app.onion = new THREE.Mesh( geometry, material );
+    // app.onion.position.y = 300;
+    app.scene.add(app.onion);
+  } else {
+    app.scene.remove(app.onion);
+  }
 }
 
 app.addBacon = function() {
@@ -271,13 +336,42 @@ window.addEventListener('resize', function() {
 
   app.renderer.setSize(app.width, app.height);
 })
+
+
+
+var addShape = function (ingredient) {
+  switch (ingredient) {
+  case 'Meatball':
+    return app.sphere;
+  case 'Onion':
+    return app.torus;
+  case 'Tomato':
+    return app.cylinder;
+  case 'Cheese':
+    return app.box;
+  case 'Ham':
+    return app.cylinder;
+  case 'Chicken':
+    // app.addChicken();
+    break;
+  case 'Butter':
+    return app.box;
+    break;
+  case 'Vegemite':
+    // app.addVegemite();
+    break;
+  }
+}
+
 // click to bring ingredients. jQuery
 
 $('.ingredients input:checkbox').on('click', function() {
   var ingredient = $(this).val();
   console.log(ingredient);
   if ($(this).is(':checked')) {
-    app.addSphere();
+    addShape(ingredient)('add', ingredient);
+  } else {
+    addShape(ingredient)('remove', ingredient);
   }
 });
 
@@ -310,7 +404,7 @@ requestionAnimationFrame:
   - Active only. Only makes animations when tab or window is focused on.
   - Checks max fps and uses that
 
-*/
+    addShape(ingredient);*/
 
 
 
