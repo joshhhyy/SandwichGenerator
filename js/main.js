@@ -167,7 +167,7 @@ app.addTriangle = function() {
 
 
 
-app.addCylinder = function (status, ingredient) {
+app.cylinder = function (status, ingredient) {
   switch (ingredient) {
   case 'Tomato':
     if (status === 'add') {
@@ -180,10 +180,10 @@ app.addCylinder = function (status, ingredient) {
         // wireframeLinewidth: 5
       });
       // debugger;
-      app.cylinder = new THREE.Mesh( cylinderShape, cylinderMaterial );
-      app.scene.add( app.cylinder );
+      app.tube = new THREE.Mesh( cylinderShape, cylinderMaterial );
+      app.scene.add(app.tube);
     } else {
-      app.scene.remove(app.cylinder);
+      app.scene.remove(app.tube);
     }
     break;
   case 'Ham': 
@@ -197,10 +197,12 @@ app.addCylinder = function (status, ingredient) {
         // wireframeLinewidth: 5
       });
       // debugger;
-      app.cylinder = new THREE.Mesh( cylinderShape, cylinderMaterial );
-      app.scene.add( app.cylinder );
+      app.tube = new THREE.Mesh( cylinderShape, cylinderMaterial );
+      app.scene.add(app.tube);
+    } else {
+      app.scene.remove(app.tube)
     }
-    break
+    break;
   }
 
 }
@@ -316,11 +318,11 @@ var addShape = function (ingredient) {
   case 'Onion': 
     return app.addTorus;
   case 'Tomato':
-    return app.addCylinder;
+    return app.cylinder;
   case 'Cheese':
     return app.box;
   case 'Ham':
-    return app.addCylinder;
+    return app.cylinder;
   case 'Chicken':
     // app.addChicken();
     break;
@@ -339,7 +341,7 @@ $('.ingredients input:checkbox').on('click', function() {
   var ingredient = $(this).val();
   console.log(ingredient);
   if ($(this).is(':checked')) {
-    addShape(ingredient)('add', ingredient);
+    app.addCylinder('add', ingredient);
   } else {
     addShape(ingredient)('remove', ingredient);
   } 
