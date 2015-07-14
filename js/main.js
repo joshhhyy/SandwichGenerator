@@ -256,15 +256,19 @@ app.addBread = function () {
 
 
 
-app.addTorus = function() {
-  var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
-  var material = new THREE.MeshBasicMaterial({
-    color: 0xafafaf,
-    map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
-  });
-  app.torus = new THREE.Mesh( geometry, material );
-  // app.torus.position.y = 300;
-  app.scene.add( app.torus );
+app.torus = function(status) {
+  if (status === 'add') {
+    var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xafafaf,
+      map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
+    });
+    app.onion = new THREE.Mesh( geometry, material );
+    // app.onion.position.y = 300;
+    app.scene.add(app.onion);
+  } else {
+    app.scene.remove(app.onion);
+  }
 
 }
 
@@ -316,7 +320,7 @@ var addShape = function (ingredient) {
   case 'Meatball':
     return app.sphere;
   case 'Onion': 
-    return app.addTorus;
+    return app.torus;
   case 'Tomato':
     return app.cylinder;
   case 'Cheese':
