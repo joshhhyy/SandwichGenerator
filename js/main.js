@@ -1,18 +1,17 @@
 var app = app || {};
-
 THREE.ImageUtils.crossOrigin = '';
 
 app.init = function() {
   console.log("App Initialized.")
-
   app.width = window.innerWidth;
   app.height = window.innerHeight;
 
-  app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 1000 );
+  app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 2000 );
   // THREE.PerspectiveCamera(FIELD OF VIEW, RATIO, NEAR, FAR)
   // Near and Far specify the range which things get rendered. (in 'units')
 
   app.camera.position.z = 200;
+  // app.camera.position.set( 0, 150, 750 );
 
   app.scene = new THREE.Scene();
   app.scene.add(app.camera);
@@ -21,10 +20,16 @@ app.init = function() {
   app.renderer.setSize(app.width, app.height);
   app.renderer.setClearColor(0xFFFFFF, 1);
 
+  app.group = new THREE.Group();
+  app.group.position.y = 30;
+  app.scene.add( app.group );
+  // app.group = new THREE.Group();
+  // app.group.position.y = 50;
+  // app.scene.add( app.group );
+
   app.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1 );
   //  THREE.HemisphereLight(SKY COLOR, GROUND COLOR, INTENSITY)
   app.scene.add(app.hemiLight)
-
 
   // app.light = new THREE.DirectionalLight( 0xFFFFFF);
   // app.light.position.set( 0, 1, 0 ).normalize();
@@ -32,9 +37,9 @@ app.init = function() {
 
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
-
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
+
   // app.addBox();
   // app.addSphere();
   // app.addTriangle();
@@ -49,13 +54,10 @@ app.init = function() {
 
 
 
-
-
-
 app.box = function(status, ingredient) {
 
   switch (ingredient) {
-  case 'Butter': 
+  case 'Butter':
     if (status === 'add') {
       var shape = new THREE.BoxGeometry(25, 25, 40)
       // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
@@ -71,7 +73,7 @@ app.box = function(status, ingredient) {
       app.scene.remove(app.butter);
     }
     break;
-  case 'Cheese': 
+  case 'Cheese':
     if (status === 'add') {
       var shape = new THREE.BoxGeometry(35, 35, 5)
 
@@ -105,14 +107,9 @@ app.sphere = function(status) {
 
     app.scene.add(app.ball);
   } else {
-    app.scene.remove(app.ball); 
+    app.scene.remove(app.ball);
   }
 }
-
-
-
-
-
 
 app.addTriangle = function() {
   PrismGeometry = function ( vertices, height ) {
@@ -159,13 +156,10 @@ app.addTriangle = function() {
   app.prism1.material.map.wrapT = THREE.ClampToEdgeWrapping;
   texture.minFilter = THREE.LinearFilter;
   app.prism1.rotation.x = -Math.PI  /  2;
-//
+
+  // app.PrismGeometry = new THREE.Mesh(shape, texture);
   app.scene.add( app.prism1 );
 }
-
-
-
-
 
 
 
@@ -188,7 +182,7 @@ app.cylinder = function (status, ingredient) {
       app.scene.remove(app.tomato);
     }
     break;
-  case 'Ham': 
+  case 'Ham':
     if (status === 'add') {
       var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
       var cylinderMaterial = new THREE.MeshPhongMaterial({
@@ -209,21 +203,15 @@ app.cylinder = function (status, ingredient) {
 
 }
 
-
-
-
-
 app.addBread = function () {
-  app.group = new THREE.Group();
-  app.group.position.y = 50;
-  app.scene.add( app.group );
 
   var addShape = function(color, x, y, z, rx, ry, rz, s) {
     var breadpts = [];
     breadpts.push(new THREE.Vector2(70, 20));
     breadpts.push(new THREE.Vector2(80, 90));
-    breadpts.push(new THREE.Vector2(-30, 70));
-    breadpts.push(new THREE.Vector2(-10, 10));
+    breadpts.push(new THREE.Vector2(-30, 80));
+    breadpts.push(new THREE.Vector2(-20, -2));
+    // breadpts.push(new THREE.Vector2(10, 0));
 
     var breadShape = new THREE.Shape();
     breadShape.moveTo(0, 0);
@@ -255,9 +243,6 @@ app.addBread = function () {
 };
 
 
-
-
-
 app.torus = function(status) {
   if (status === 'add') {
     var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
@@ -271,8 +256,57 @@ app.torus = function(status) {
   } else {
     app.scene.remove(app.onion);
   }
-
 }
+
+app.bacon = function(status) {
+    if (status === 'add') {
+      var nsControlPoints = [
+        [
+          new THREE.Vector4(-200, -200, 100, 1),
+          new THREE.Vector4(-200, -100, -200, 1),
+          new THREE.Vector4(-200, 100, 250, 1),
+          new THREE.Vector4(-200, 200, -100, 1)
+        ],
+        [
+          new THREE.Vector4(0, -200, 0, 1),
+          new THREE.Vector4(0, -100, -100, 5),
+          new THREE.Vector4(0, 100, 150, 5),
+          new THREE.Vector4(0, 200, 0, 1)
+        ],
+        [
+          new THREE.Vector4(200, -200, -100, 1),
+          new THREE.Vector4(200, -100, 200, 1),
+          new THREE.Vector4(200, 100, -250, 1),
+          new THREE.Vector4(200, 200, 100, 1)
+        ]
+      ];
+      var degree1 = 2;
+      var degree2 = 3;
+      var knots1 = [0, 0, 0, 1, 1, 1];
+      var knots2 = [0, 0, 0, 0, 1, 1, 1, 1];
+      var nurbsSurface = new THREE.BaconSurface(degree1, degree2, knots1, knots2, nsControlPoints);
+
+      var map = THREE.ImageUtils.loadTexture('images/bacon.jpg');
+      map.wrapS = map.wrapT = THREE.RepeatWrapping;
+      map.anisotropy = 16;
+
+      getSurfacePoint = function(u, v) {
+        return nurbsSurface.getPoint(u, v);
+      };
+
+      var geometry = new THREE.ParametricGeometry(getSurfacePoint, 20, 20);
+      var material = new THREE.MeshLambertMaterial({
+        map: map,
+        side: THREE.DoubleSide
+      });
+      app.baconStrip = new THREE.Mesh(geometry, material);
+      app.baconStrip.position.set(-200, 100, 0);
+      app.baconStrip.scale.multiplyScalar(1);
+      app.group.add(app.baconStrip);
+    } else {
+      app.group.remove(app.baconStrip);
+    }
+  }
 
 app.text = function() {
   var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
@@ -310,8 +344,6 @@ app.animate = function() {
   app.renderer.render(app.scene, app.camera);
 }
 
-
-
 window.onload = app.init;
 
 // window.addEventListener('mousemove', function(event) {
@@ -334,11 +366,12 @@ window.addEventListener('resize', function() {
 })
 
 
+
 var addShape = function (ingredient) {
   switch (ingredient) {
   case 'Meatball':
     return app.sphere;
-  case 'Onion': 
+  case 'Onion':
     return app.torus;
   case 'Tomato':
     return app.cylinder;
@@ -352,14 +385,17 @@ var addShape = function (ingredient) {
   case 'Butter':
     return app.box;
     break;
+  case 'Bacon':
+    return app.bacon;
   case 'Vegemite':
     // app.addVegemite();
     break;
   }
 }
 
-// click to bring ingredients. jQuery
 
+
+// click to bring ingredients. jQuery
 $('.ingredients input:checkbox').on('click', function() {
   var ingredient = $(this).val();
   console.log(ingredient);
@@ -367,7 +403,7 @@ $('.ingredients input:checkbox').on('click', function() {
     addShape(ingredient)('add', ingredient);
   } else {
     addShape(ingredient)('remove', ingredient);
-  } 
+  }
 });
 
 
