@@ -257,48 +257,57 @@ app.torus = function(status) {
   }
 }
 
-app.addBacon = function() {
-  var nsControlPoints = [
-    [
-      new THREE.Vector4 ( -200, -200, 100, 1 ),
-      new THREE.Vector4 ( -200, -100, -200, 1 ),
-      new THREE.Vector4 ( -200, 100, 250, 1 ),
-      new THREE.Vector4 ( -200, 200, -100, 1 )
-    ],
-    [
-      new THREE.Vector4 ( 0, -200, 0, 1 ),
-      new THREE.Vector4 ( 0, -100, -100, 5 ),
-      new THREE.Vector4 ( 0, 100, 150, 5 ),
-      new THREE.Vector4 ( 0, 200, 0, 1 )
-    ],
-    [
-      new THREE.Vector4 ( 200, -200, -100, 1 ),
-      new THREE.Vector4 ( 200, -100, 200, 1 ),
-      new THREE.Vector4 ( 200, 100, -250, 1 ),
-      new THREE.Vector4 ( 200, 200, 100, 1 )
-    ]
-  ];
-  var degree1 = 2;
-  var degree2 = 3;
-  var knots1 = [0, 0, 0, 1, 1, 1];
-  var knots2 = [0, 0, 0, 0, 1, 1, 1, 1];
-  var nurbsSurface = new THREE.BaconSurface(degree1, degree2, knots1, knots2, nsControlPoints);
+app.bacon = function(status) {
+    if (status === 'add') {
+      var nsControlPoints = [
+        [
+          new THREE.Vector4(-200, -200, 100, 1),
+          new THREE.Vector4(-200, -100, -200, 1),
+          new THREE.Vector4(-200, 100, 250, 1),
+          new THREE.Vector4(-200, 200, -100, 1)
+        ],
+        [
+          new THREE.Vector4(0, -200, 0, 1),
+          new THREE.Vector4(0, -100, -100, 5),
+          new THREE.Vector4(0, 100, 150, 5),
+          new THREE.Vector4(0, 200, 0, 1)
+        ],
+        [
+          new THREE.Vector4(200, -200, -100, 1),
+          new THREE.Vector4(200, -100, 200, 1),
+          new THREE.Vector4(200, 100, -250, 1),
+          new THREE.Vector4(200, 200, 100, 1)
+        ]
+      ];
+      var degree1 = 2;
+      var degree2 = 3;
+      var knots1 = [0, 0, 0, 1, 1, 1];
+      var knots2 = [0, 0, 0, 0, 1, 1, 1, 1];
+      var nurbsSurface = new THREE.BaconSurface(degree1, degree2, knots1, knots2, nsControlPoints);
 
-  var map = THREE.ImageUtils.loadTexture( 'images/bacon.jpg' );
-  map.wrapS = map.wrapT = THREE.RepeatWrapping;
-  map.anisotropy = 16;
+      var map = THREE.ImageUtils.loadTexture('images/bacon.jpg');
+      map.wrapS = map.wrapT = THREE.RepeatWrapping;
+      map.anisotropy = 16;
 
-  getSurfacePoint = function(u, v) {
-    return nurbsSurface.getPoint(u, v);
-  };
+      getSurfacePoint = function(u, v) {
+        return nurbsSurface.getPoint(u, v);
+      };
 
-  var geometry = new THREE.ParametricGeometry( getSurfacePoint, 20, 20 );
-  var material = new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } );
-  app.bacon = new THREE.Mesh( geometry, material );
-  app.bacon.position.set( - 200, 100, 0 );
-  app.bacon.scale.multiplyScalar( 1 );
-  app.group.add( app.bacon );
-};
+      var geometry = new THREE.ParametricGeometry(getSurfacePoint, 20, 20);
+      var material = new THREE.MeshLambertMaterial({
+        map: map,
+        side: THREE.DoubleSide
+      });
+      app.baconStrip = new THREE.Mesh(geometry, material);
+      app.baconStrip.position.set(-200, 100, 0);
+      app.baconStrip.scale.multiplyScalar(1);
+      app.group.add(app.baconStrip);
+    } else {
+      app.group.remove(app.baconStrip);
+    }
+  }
+
+
 
 app.animate = function() {
   requestAnimationFrame(app.animate);
@@ -357,14 +366,17 @@ var addShape = function (ingredient) {
   case 'Butter':
     return app.box;
     break;
+  case 'Bacon':
+    return app.bacon;
   case 'Vegemite':
     // app.addVegemite();
     break;
   }
 }
 
-// click to bring ingredients. jQuery
 
+
+// click to bring ingredients. jQuery
 $('.ingredients input:checkbox').on('click', function() {
   var ingredient = $(this).val();
   console.log(ingredient);
