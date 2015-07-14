@@ -57,8 +57,6 @@ app.addBox = function(ingredient) {
 
   app.scene.add(app.cube);
 
-  // var modifier = new THREE.SubdivisionModifier( subdiv );
-  //modifier.modify( smooth );
 }
 
 
