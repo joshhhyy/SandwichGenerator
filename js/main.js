@@ -32,17 +32,24 @@ app.init = function() {
 
   app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
-  document.body.appendChild(app.renderer.domElement); // Throw what the renderer is looking at on the page
-  // app.addBox();
-  // app.addSphere();
-  app.addRing();
-  // app.addTriangle();
-  // app.addCylinder();
-  app.animate();
-  app.renderer.render(app.scene, app.camera)
-  console.log(app.renderer)
 
+  document.body.appendChild(app.renderer.domElement);
+  // Throw what the renderer is looking at on the page
+  app.addBox();
+  app.addSphere();
+  app.addTriangle();
+  app.addCylinder();
+  app.addBread();
+  app.addRing();
+  app.animate();
+  // app.renderer.render(app.scene, app.camera)
 }
+
+
+
+
+
+
 
 app.addBox = function(ingredient) {
   var shape = new THREE.BoxGeometry(50, 50, 5)
@@ -59,6 +66,12 @@ app.addBox = function(ingredient) {
 
 }
 
+
+
+
+
+
+
 app.addSphere = function() {
   var shape = new THREE.SphereGeometry(6, 40, 16);
   // THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS)
@@ -74,6 +87,11 @@ app.addSphere = function() {
 
   app.scene.add(app.sphere)
 }
+
+
+
+
+
 
 app.addTriangle = function() {
   PrismGeometry = function ( vertices, height ) {
@@ -127,6 +145,9 @@ app.addTriangle = function() {
 
 
 
+
+
+
 app.addCylinder = function () {
   var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
   var cylinderMaterial = new THREE.MeshPhongMaterial({
@@ -142,15 +163,66 @@ app.addCylinder = function () {
 
 }
 
+
+
+
+
+app.addBread = function () {
+  app.group = new THREE.Group();
+  app.group.position.y = 50;
+  app.scene.add( app.group );
+
+  function addShape(color, x, y, z, rx, ry, rz, s) {
+    var breadpts = [];
+    breadpts.push(new THREE.Vector2(70, 20));
+    breadpts.push(new THREE.Vector2(80, 90));
+    breadpts.push(new THREE.Vector2(-30, 70));
+    breadpts.push(new THREE.Vector2(-10, 10));
+
+    var breadShape = new THREE.Shape();
+    breadShape.moveTo(0, 0);
+    breadShape.splineThru(breadpts);
+
+    var breadExtrude = {
+      amount: 8,
+      bevelEnabled: true,
+      bevelSegments: 2,
+      steps: 4,
+      bevelSize: 1,
+      bevelThickness: 1
+    };
+
+    var breadGeometry = new THREE.ExtrudeGeometry(breadShape, breadExtrude);
+    console.log('hai');
+    var mesh = new THREE.Mesh(breadGeometry, new THREE.MeshPhongMaterial({
+      color: color
+    }));
+
+    app.group.add(mesh);
+    // app.scene.add( mesh );
+
+  };
+  addShape(0x808080, -50, -100, 0, 0, 0, 0, 1);
+  // addShape(0x808080, -70, -10, 0, 0, 0, 0, 1);
+};
+
+
+
+
+
 app.addRing = function() {
   var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
-  var material = new THREE.MeshBasicMaterial({ 
+  var material = new THREE.MeshBasicMaterial({
     color: 0xafafaf,
     map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
   });
   app.torus = new THREE.Mesh( geometry, material );
+  // app.torus.position.y = 300;
   app.scene.add( app.torus );
+
 }
+
+
 
 
 app.animate = function() {
@@ -191,6 +263,11 @@ window.addEventListener('resize', function() {
 
   app.renderer.setSize(app.width, app.height);
 })
+
+
+
+
+// click to bring ingredients. jQuery
 
 $('.ingredients input:checkbox').on('click', function() {
   var ingredient = $(this).val();

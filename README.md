@@ -1,6 +1,6 @@
-### Project 3: Sandwich Generator 
+### Project 3: Sandwich Generator
 
-### Things to do: 
+### Things to do:
   - Find out how to make custom shapes
   - Link tickboxes to shape generation
   - Title heading
