@@ -1,8 +1,15 @@
 var app = app || {};
 THREE.ImageUtils.crossOrigin = '';
+var horizontalAngle = 0;
+var clock = new THREE.Clock();
+var TWO_PI = Math.PI * 2
+var frameTime = 0 
+var verticalAngle = 0
 
 app.init = function() {
-  console.log("App Initialized.")
+  console.log("App Initialized.");
+
+  
   app.width = window.innerWidth;
   app.height = window.innerHeight;
 
@@ -69,6 +76,7 @@ app.box = function(status, ingredient) {
       app.butter = new THREE.Mesh(shape, material);
 
       app.scene.add(app.butter);
+      app.float(app.butter)
     } else {
       app.scene.remove(app.butter);
     }
@@ -327,38 +335,51 @@ app.text = function() {
   app.scene.add(app.heading);
 }
 
+app.float = function(ingredient) {
+    horizontalAngle += 0.5 * frameTime; 
+    frameTime = clock.getDelta();
+    ingredient.rotation.x += 1.0 * frameTime;
+    ingredient.rotation.y += 1.0 * frameTime;
+    if ( horizontalAngle > TWO_PI ) {
+      horizontalAngle -= TWO_PI;
+    }
+    ingredient.position.x = Math.sin( horizontalAngle ) * 130;
+
+    verticalAngle += 1.5 * frameTime;
+    if ( verticalAngle > TWO_PI ) {
+      verticalAngle -= TWO_PI;
+    }
+    ingredient.position.y = Math.sin( verticalAngle ) * 60;
+}
 
 
 
 app.animate = function() {
   requestAnimationFrame(app.animate);
 
-  // frameTime = clock.getDelta();
+  if (app.tomato) { 
+    app.float(app.tomato)
+  }
+  if (app.cheese) { 
+    app.float(app.cheese)
+  }
+  if (app.ham) { 
+    app.float(app.ham)
+  }
+  if (app.onion) { 
+    app.float(app.onion)
+  }
+  if (app.meatball) { 
+    app.float(app.meatball)
+  }
+  if (app.butter) { 
+    app.float(app.butter)
+  }
+  if (app.baconStrip) { 
+    app.float(app.baconStrip)
+  }
 
-  app.butter.rotation.x += 1.0 * 0.003;
-  app.butter.rotation.y += 1.0 * 0.003;
 
-  app.tomato.rotation.y += 1.0 * 0.003;
-  app.tomato.rotation.z -= 1.0 * 0.003;
-
-  // torus.rotation.x -= 1.0 * frameTime;
-  // torus.rotation.y -= 1.0 * frameTime;
-
-  // pyramid.rotation.y += 0.5 * frameTime;
-
-  // horizontalAngle += 0.5 * frameTime;
-  // if ( horizontalAngle > TWO_PI )
-  //   horizontalAngle -= TWO_PI;
-  // cube.position.x = Math.sin( horizontalAngle ) * 4;
-  // cylinder.position.x = Math.sin( horizontalAngle ) * - 4;
-  // torus.position.x = Math.cos( horizontalAngle ) * 4;
-
-  // verticalAngle += 1.5 * frameTime;
-  // if ( verticalAngle > TWO_PI ) 
-  //   verticalAngle -= TWO_PI;
-  // cube.position.y = Math.sin( verticalAngle ) * 2 + 2.9;
-  // cylinder.position.y = Math.sin( verticalAngle ) * 2 + 3.1;
-  // torus.position.y = Math.cos( verticalAngle ) * 2 + 3.3;
 
   app.renderer.render(app.scene, app.camera);
 }
@@ -366,11 +387,7 @@ app.animate = function() {
 window.onload = app.init;
 
 // window.addEventListener('mousemove', function(event) {
-//   // console.log(event);
-//   app.cube.position.x = event.clientX - (app.width / 2);
-//   app.cube.position.y = ( event.clientY - (app.height / 2) ) * -1;
-
-//   app.sphere.position.y = ( event.clientY - (app.height / 2) ) * -1
+//   console.log(event.x, event.y);
 
 // });
 

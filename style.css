@@ -22,6 +22,7 @@ body {
   color: black;
   /*width: 15%;*/
   height: auto;
+  background-color: transparent;
 }
 
 input[type=checkbox] {
