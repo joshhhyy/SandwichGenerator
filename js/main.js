@@ -35,7 +35,9 @@ app.init = function() {
   // app.light.position.set( 0, 1, 0 ).normalize();
   // app.scene.add(app.light);
 
-  app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement document.body.appendChild(app.renderer.domElement);
+  app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
+
+  document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
 
   // app.addBox();
@@ -98,7 +100,7 @@ app.sphere = function(status) {
       // color: 0xEC407A,
       // wireframe: true,
       wireframeLinewidth: 4,
-      map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg')
+      map: THREE.ImageUtils.loadTexture('images/meatballtexture.jpg')
     });
 
     app.ball = new THREE.Mesh(shape, material);
@@ -312,13 +314,15 @@ app.text = function() {
   }));
 
   var material = new THREE.MeshPhongMaterial({
+    size: 0.1,
     color: 0x1BBC9B,
-    bevelEnabled: true,
-    bevelThickness: 2,
-    bevelSize: 2
+    curveSegments: 1000,
   });
 
   app.heading = new THREE.Mesh(geometry, material);
+  app.heading.position.x = -110
+  app.heading.position.y = -60
+  app.heading.position.z = -400
 
   app.scene.add(app.heading);
 }
@@ -329,15 +333,32 @@ app.text = function() {
 app.animate = function() {
   requestAnimationFrame(app.animate);
 
-  // app.cube.rotation.x += 0.01;
-  // app.cube.rotation.y += 0.01;
-  // app.cube.rotation.z += 0.01;
+  // frameTime = clock.getDelta();
 
-  // app.cylinder.rotation.y += 0.02;
+  app.butter.rotation.x += 1.0 * 0.003;
+  app.butter.rotation.y += 1.0 * 0.003;
 
-  // app.sphere.rotation.x += 0.01;
-  // app.sphere.rotation.y += 0.05;
-  // app.sphere.rotation.z += 0.05;
+  app.tomato.rotation.y += 1.0 * 0.003;
+  app.tomato.rotation.z -= 1.0 * 0.003;
+
+  // torus.rotation.x -= 1.0 * frameTime;
+  // torus.rotation.y -= 1.0 * frameTime;
+
+  // pyramid.rotation.y += 0.5 * frameTime;
+
+  // horizontalAngle += 0.5 * frameTime;
+  // if ( horizontalAngle > TWO_PI )
+  //   horizontalAngle -= TWO_PI;
+  // cube.position.x = Math.sin( horizontalAngle ) * 4;
+  // cylinder.position.x = Math.sin( horizontalAngle ) * - 4;
+  // torus.position.x = Math.cos( horizontalAngle ) * 4;
+
+  // verticalAngle += 1.5 * frameTime;
+  // if ( verticalAngle > TWO_PI ) 
+  //   verticalAngle -= TWO_PI;
+  // cube.position.y = Math.sin( verticalAngle ) * 2 + 2.9;
+  // cylinder.position.y = Math.sin( verticalAngle ) * 2 + 3.1;
+  // torus.position.y = Math.cos( verticalAngle ) * 2 + 3.3;
 
   app.renderer.render(app.scene, app.camera);
 }
