@@ -5,6 +5,11 @@ app.init = function() {
   console.log("App Initialized.")
   app.width = window.innerWidth;
   app.height = window.innerHeight;
+  app.clock = new THREE.Clock();
+  // app.frameTime = 0;
+  // app.horizontalAngle = 0;
+  // app.verticalAngle = 0;
+  // app.TWO_PI = Math.PI * 2;
 
   app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 2000 );
   // THREE.PerspectiveCamera(FIELD OF VIEW, RATIO, NEAR, FAR)
@@ -47,9 +52,10 @@ app.init = function() {
   // app.addBread();
   // app.addBacon();
   // app.addTorus();
-  app.text();
+  // app.text();
+  app.addOlive();
   app.animate();
-  // app.renderer.render(app.scene, app.camera)
+  app.renderer.render(app.scene, app.camera)
 }
 
 
@@ -98,13 +104,13 @@ app.sphere = function(status) {
 
     var material = new THREE.MeshPhongMaterial({
       // color: 0xEC407A,
-      // wireframe: true,
+      wireframe: true,
       wireframeLinewidth: 4,
-      map: THREE.ImageUtils.loadTexture('images/hamtexture.jpg')
+      map: THREE.ImageUtils.loadTexture('images/hamtexture.png')
     });
 
     app.ball = new THREE.Mesh(shape, material);
-
+    debugger;
     app.scene.add(app.ball);
   } else {
     app.scene.remove(app.ball);
@@ -306,7 +312,7 @@ app.bacon = function(status) {
     } else {
       app.group.remove(app.baconStrip);
     }
-  }
+}
 
 app.text = function() {
   var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
@@ -324,8 +330,23 @@ app.text = function() {
   app.scene.add(app.heading);
 }
 
+app.addOlive = function () {
+  var materialNormal = new THREE.MeshNormalMaterial();
+  var bigOliveGeom = new THREE.SphereGeometry( 30, 32, 30 );
+  app.bigOliveMesh = new THREE.Mesh( bigOliveGeom );
+  app.bigOliveMesh.scale.set( 1, 0.8, 0.8 );
 
+  app.scene.add( app.bigOliveMesh );
 
+  var smallOliveGeom = new THREE.SphereGeometry( 11, 32, 32 );
+  app.smallOliveMesh = new THREE.Mesh( smallOliveGeom );
+  app.smallOliveMesh.wireframe = true;
+  app.smallOliveMesh.position.x = 20;
+  app.smallOliveMesh.position.y = -10;
+  app.smallOliveMesh.scale.set( 0.7, 0.8, 0.6 );
+
+  app.scene.add( app.smallOliveMesh );
+}
 
 app.animate = function() {
   requestAnimationFrame(app.animate);
@@ -343,8 +364,9 @@ app.animate = function() {
   app.renderer.render(app.scene, app.camera);
 }
 
-window.onload = app.init;
 
+
+window.onload = app.init;
 // window.addEventListener('mousemove', function(event) {
 //   // console.log(event);
 //   app.cube.position.x = event.clientX - (app.width / 2);
@@ -404,7 +426,6 @@ $('.ingredients input:checkbox').on('click', function() {
     addShape(ingredient)('remove', ingredient);
   }
 });
-
 
 
 
