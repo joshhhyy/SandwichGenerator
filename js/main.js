@@ -3,15 +3,20 @@ THREE.ImageUtils.crossOrigin = '';
 var horizontalAngle = 0;
 var clock = new THREE.Clock();
 var TWO_PI = Math.PI * 2
-var frameTime = 0 
+var frameTime = 0
 var verticalAngle = 0
 
 app.init = function() {
   console.log("App Initialized.");
 
-  
+
   app.width = window.innerWidth;
   app.height = window.innerHeight;
+  app.clock = new THREE.Clock();
+  // app.frameTime = 0;
+  // app.horizontalAngle = 0;
+  // app.verticalAngle = 0;
+  // app.TWO_PI = Math.PI * 2;
 
   app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 2000 );
   // THREE.PerspectiveCamera(FIELD OF VIEW, RATIO, NEAR, FAR)
@@ -54,9 +59,10 @@ app.init = function() {
   // app.addBread();
   // app.addBacon();
   // app.addTorus();
-  app.text();
+  // app.text();
+  // app.addOlive();
   app.animate();
-  // app.renderer.render(app.scene, app.camera)
+  app.renderer.render(app.scene, app.camera)
 }
 
 
@@ -106,7 +112,7 @@ app.sphere = function(status) {
 
     var material = new THREE.MeshPhongMaterial({
       // color: 0xEC407A,
-      // wireframe: true,
+      wireframe: true,
       wireframeLinewidth: 4,
       map: THREE.ImageUtils.loadTexture('images/meatballtexture.jpg')
     });
@@ -235,7 +241,7 @@ app.addBread = function () {
     };
 
     var breadGeometry = new THREE.ExtrudeGeometry(breadShape, breadExtrude);
-    console.log('hai');
+    console.log('you got bread');
     app.bread = new THREE.Mesh(breadGeometry, new THREE.MeshPhongMaterial({
       color: color,
       map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
@@ -314,7 +320,7 @@ app.bacon = function(status) {
     } else {
       app.group.remove(app.baconStrip);
     }
-  }
+}
 
 app.text = function() {
   var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
@@ -336,7 +342,7 @@ app.text = function() {
 }
 
 app.float = function(ingredient) {
-    horizontalAngle += 0.5 * frameTime; 
+    horizontalAngle += 0.5 * frameTime;
     frameTime = clock.getDelta();
     ingredient.rotation.x += 1.0 * frameTime;
     ingredient.rotation.y += 1.0 * frameTime;
@@ -353,30 +359,61 @@ app.float = function(ingredient) {
 }
 
 
+app.olive = function() {
+    if (status === 'add') {
+      var materialNormal = new THREE.MeshNormalMaterial();
+      var bigOliveGeom = new THREE.SphereGeometry(30, 32, 30);
+      app.bigOliveMesh = new THREE.Mesh(bigOliveGeom);
+      app.bigOliveMesh.scale.set(1, 0.8, 0.8);
+
+      var smallOliveGeom = new THREE.SphereGeometry(11, 32, 32);
+      app.smallOliveMesh = new THREE.Mesh(smallOliveGeom);
+      app.smallOliveMesh.wireframe = true;
+      app.smallOliveMesh.position.x = 20;
+      app.smallOliveMesh.position.y = -10;
+      app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
+
+      app.olivesGroup = app.group.add(app.smallOliveMesh,
+        app.bigOliveMesh);
+      app.scene.add(app.olivesGroup);
+    } else {
+      app.scene.remove(app.olivesGroup);
+      // app.scene.remove(app.bigOliveMesh);
+    }
+  }
+
+// }
+
+
+
+
 
 app.animate = function() {
   requestAnimationFrame(app.animate);
 
-  if (app.tomato) { 
+  if (app.tomato) {
     app.float(app.tomato)
   }
-  if (app.cheese) { 
+  if (app.cheese) {
     app.float(app.cheese)
   }
-  if (app.ham) { 
+  if (app.ham) {
     app.float(app.ham)
   }
-  if (app.onion) { 
+  if (app.onion) {
     app.float(app.onion)
   }
-  if (app.meatball) { 
+  if (app.meatball) {
     app.float(app.meatball)
   }
-  if (app.butter) { 
+  if (app.butter) {
     app.float(app.butter)
   }
-  if (app.baconStrip) { 
+  if (app.baconStrip) {
     app.float(app.baconStrip)
+  }
+  if (app.olivesGroup) {
+    app.float(app.olivesGroup)
   }
 
 
@@ -384,8 +421,9 @@ app.animate = function() {
   app.renderer.render(app.scene, app.camera);
 }
 
-window.onload = app.init;
 
+
+window.onload = app.init;
 // window.addEventListener('mousemove', function(event) {
 //   console.log(event.x, event.y);
 
@@ -423,9 +461,9 @@ var addShape = function (ingredient) {
     break;
   case 'Bacon':
     return app.bacon;
-  case 'Vegemite':
-    // app.addVegemite();
-    break;
+  case 'Olive':
+    return app.olive;
+    // break;
   }
 }
 
@@ -441,7 +479,6 @@ $('.ingredients input:checkbox').on('click', function() {
     addShape(ingredient)('remove', ingredient);
   }
 });
-
 
 
 
