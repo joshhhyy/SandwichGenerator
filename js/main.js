@@ -52,7 +52,7 @@ app.init = function() {
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
 
-  app.box('add', 'Bread');
+  // app.box('add', 'Bread');
   // app.addSphere();
   // app.addTriangle();
   // app.addCylinder();
@@ -555,9 +555,13 @@ $('.ingredients input:checkbox').on('click', function() {
   }
 });
 
-$(.reset).on('click', function() {
-  addShape(ingredients)('remove', ingredient);
-}
+//reset ingredients from scene
+$('.reset').on('click', function() {
+    var objsToRemove = app.scene.children.slice(3);
+    $.each(objsToRemove, function( i, object ) {
+          app.scene.remove(object);
+    });
+});
 
 
 
