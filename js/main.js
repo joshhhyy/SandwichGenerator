@@ -106,7 +106,7 @@ app.box = function(status, ingredient) {
 
       app.scene.add(app.bread);
       app.scene.add(app.bread2);
-      console.log('yo this bread is made')
+
     } else {
       app.scene.remove(app.bread);
     }
@@ -378,34 +378,25 @@ app.text = function() {
   app.scene.add(app.heading);
 }
 
-app.float = function(ingredient) {
-  frameTime = clock.getDelta();
-  horizontalAngle += 0.5 * frameTime;
-  
-  verticalAngle += 1.5 * frameTime;
 
-  // if ( horizontalAngle > doublePi ) {
-  //   horizontalAngle -= doublePi;
-  // } else if ( verticalAngle > doublePi ) {
-  //   verticalAngle -= doublePi;
-  // } 
-  // console.log(ingredient)
+
+app.float = function(ingredient) {
+
   switch (ingredient) {
     case app.bread:
-      app.bread.position.x = Math.sin( horizontalAngle ) * 110;
+      app.bread.position.x = 120
       app.bread.position.y = Math.sin( verticalAngle ) * 60;
-      app.bread.rotation.x += 3.7 * frameTime;
-      app.bread.rotation.y += 3.0 * frameTime;
-      break;
+      app.bread.rotation.x += 1.0 * frameTime;
+      app.bread.rotation.y += 1.0 * frameTime;
     case app.bread2:
-      app.bread2.position.x = Math.sin( horizontalAngle ) * 49;
-      app.bread2.position.y = Math.sin( verticalAngle ) * 20;
-      app.bread2.rotation.x += 2.5 * frameTime;
-      app.bread2.rotation.y += 3.0 * frameTime;
+      app.bread2.position.x = -120
+      app.bread2.position.y = Math.sin( verticalAngle ) * 60;
+      app.bread2.rotation.x += 1.1 * frameTime;
+      app.bread2.rotation.y += 1.0 * frameTime;
       break;
-    case app.tomato: 
-      app.tomato.position.x = Math.sin( horizontalAngle ) * 130;
-      app.tomato.position.y = Math.sin( verticalAngle ) * 60;
+    case app.tomato:
+      app.tomato.position.x = Math.sin( horizontalAngle ) * 79;
+      app.tomato.position.y = Math.sin( verticalAngle ) * 40;
       app.tomato.rotation.x += 1.7 * frameTime;
       app.tomato.rotation.y += 1.0 * frameTime;
       break;
@@ -421,8 +412,25 @@ app.float = function(ingredient) {
       app.cheese.rotation.x += 3.0 * frameTime;
       app.cheese.rotation.y += 1.0 * frameTime;
       break;
-    default:
-      console.log(ingredient)
+    case app.ham:
+      app.ham.position.x = Math.sin( horizontalAngle ) * 1
+      app.ham.position.y = Math.sin( verticalAngle ) * 12
+      app.ham.rotation.x = Math.sin( horizontalAngle ) * 12
+      app.ham.rotation.y = Math.sin( horizontalAngle ) * 12
+      break;
+    case app.onion:
+      app.onion.position.x = Math.sin( horizontalAngle ) * 30 
+      app.onion.position.y = Math.sin( verticalAngle ) * 30 
+      app.onion.rotation.x = 2.7 * frameTime
+      app.onion.rotation.y = Math.sin( horizontalAngle ) * 12
+      break;
+    case app.olivesGroup:
+      app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30 
+      // app.olivesGroup.position.y = Math.sin( verticalAngle ) * 60 
+      app.olivesGroup.rotation.x = Math.sin( horizontalAngle ) * 12
+      app.olivesGroup.rotation.y = 1.5 * 12
+      break;
+
   }
 }
 
@@ -430,29 +438,29 @@ app.float = function(ingredient) {
 app.olive = function(status) {
   if (status === 'add') {
     var materialNormal = new THREE.MeshNormalMaterial();
-    var bigOliveGeom = new THREE.SphereGeometry(30, 32, 30);
+    var bigOliveGeom = new THREE.SphereGeometry(15, 16, 15);
     var firstMaterial = new THREE.MeshPhongMaterial({
       color: 0x1E824C,
+      // wireframe: true
     })
     app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
     app.bigOliveMesh.scale.set(1, 0.8, 0.8);
 
-    var smallOliveGeom = new THREE.SphereGeometry(11, 32, 32);
+    var smallOliveGeom = new THREE.SphereGeometry(6, 16, 16);
     var material = new THREE.MeshPhongMaterial({
       color: 0xD91E18,
     });
     app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
     // app.smallOliveMesh.wireframe = true;
-    app.smallOliveMesh.position.x = 20;
-    app.smallOliveMesh.position.y = -10;
-    app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
+    app.smallOliveMesh.position.x = 13;
+    app.smallOliveMesh.position.y = 0;
+    app.smallOliveMesh.scale.set(0.6, 0.8, 0.6);
 
     app.olivesGroup = app.group.add(app.smallOliveMesh,
       app.bigOliveMesh);
     app.scene.add(app.olivesGroup);
   } else {
     app.scene.remove(app.olivesGroup);
-    // app.scene.remove(app.bigOliveMesh);
   }
 }
 
@@ -464,31 +472,44 @@ app.olive = function(status) {
 app.animate = function() {
   requestAnimationFrame(app.animate);
 
+  frameTime = clock.getDelta();
+  horizontalAngle += 0.5 * frameTime;
+  verticalAngle += 1.5 * frameTime;
+
+
   if (app.tomato) {
     app.float(app.tomato)
+  }
 
-  } else if (app.cheese) {
-    app.float(app.cheese)
+  if (app.cheese) {
+    app.float(app.cheese);
+  }
 
-  } else if (app.ham) {
+  if (app.ham) {
     app.float(app.ham)
+  }
 
-  } else if (app.onion) {
+  if (app.onion) {
     app.float(app.onion)
+  }
 
-  } else if (app.meatball) {
+  if (app.meatball) {
     app.float(app.meatball)
+  }
 
-  } else if (app.butter) {
+  if (app.butter) {
     app.float(app.butter)
+  }
 
-  } else if (app.baconStrip) {
+  if (app.baconStrip) {
     app.float(app.baconStrip)
+  }
 
-  } else if (app.olivesGroup) {
+  if (app.olivesGroup) {
     app.float(app.olivesGroup)
+  }
 
-  } else if (app.bread && app.bread2) {
+  if (app.bread && app.bread2) {
     app.float(app.bread)
     app.float(app.bread2)
   }
