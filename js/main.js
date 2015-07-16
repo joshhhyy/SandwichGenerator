@@ -52,7 +52,7 @@ app.init = function() {
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
 
-  // app.addBox();
+  app.box('add', 'Bread');
   // app.addSphere();
   // app.addTriangle();
   // app.addCylinder();
@@ -70,9 +70,50 @@ app.init = function() {
 app.box = function(status, ingredient) {
 
   switch (ingredient) {
+  case 'Bread':
+    if (status === 'add') {
+      var shape = new THREE.BoxGeometry(50, 40, 7)
+
+      var material1 = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/crusttexture.jpg')
+      });
+
+      var material2 = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/crusttexture.jpg')
+      });
+
+      var material3 = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/crusttexture.jpg')
+      });
+
+      var material4 = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/crusttexture.jpg')
+      });
+
+      var material5 = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
+      });
+
+      var material6 = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
+      });
+
+      var materials = [material1, material2, material3, material4, material5, material6]
+      var meshFaceMaterial = new THREE.MeshFaceMaterial( materials );
+
+      app.bread = new THREE.Mesh(shape, meshFaceMaterial);
+      app.bread2 = new THREE.Mesh(shape, meshFaceMaterial);
+
+      app.scene.add(app.bread);
+      app.scene.add(app.bread2);
+      console.log('yo this bread is made')
+    } else {
+      app.scene.remove(app.bread);
+    }
+    break;
   case 'Butter':
     if (status === 'add') {
-      var shape = new THREE.BoxGeometry(25, 25, 40)
+      var shape = new THREE.BoxGeometry(10, 10, 40)
       // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
       var material = new THREE.MeshPhongMaterial({
         // color: 0x1A237E,
@@ -82,7 +123,7 @@ app.box = function(status, ingredient) {
       app.butter = new THREE.Mesh(shape, material);
 
       app.scene.add(app.butter);
-      app.float(app.butter)
+
     } else {
       app.scene.remove(app.butter);
     }
@@ -183,15 +224,10 @@ app.cylinder = function (status, ingredient) {
     if (status === 'add') {
       var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
       var cylinderMaterial = new THREE.MeshPhongMaterial({
-        color: 0xFFFFaF,
         map: THREE.ImageUtils.loadTexture('images/tomatotexture.jpg'),
-        // shading: THREE.SmoothShading
-        // wireframe: true,
-        // wireframeLinewidth: 5
       });
-      // debugger;
       app.tomato = new THREE.Mesh( cylinderShape, cylinderMaterial );
-      // app.scene.add(app.tomato);
+      app.scene.add(app.tomato);
     } else {
       app.scene.remove(app.tomato);
     }
@@ -200,13 +236,8 @@ app.cylinder = function (status, ingredient) {
     if (status === 'add') {
       var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
       var cylinderMaterial = new THREE.MeshPhongMaterial({
-        color: 0xFFFFaF,
         map: THREE.ImageUtils.loadTexture('images/hamtexture.png'),
-        // shading: THREE.SmoothShading
-        // wireframe: true,
-        // wireframeLinewidth: 5
       });
-      // debugger;
       app.ham = new THREE.Mesh( cylinderShape, cylinderMaterial );
       app.scene.add(app.ham);
     } else {
@@ -278,7 +309,7 @@ app.bacon = function(status) {
         [
           new THREE.Vector4(-200, -200, 100, 1),
           new THREE.Vector4(-200, -100, -200, 1),
-          new THREE.Vector4(-200, 100, 250, 1),
+          new THREE.Vector4(-200, 500, 250, 1),
           new THREE.Vector4(-200, 200, -100, 1)
         ],
         [
@@ -343,57 +374,88 @@ app.text = function() {
   app.heading = new THREE.Mesh (geometry, material);
 
   app.heading.position.x = -90,
+  app.heading.position.z = -100
   app.scene.add(app.heading);
 }
 
 app.float = function(ingredient) {
-    horizontalAngle += 0.5 * frameTime;
-    frameTime = clock.getDelta();
-    ingredient.rotation.x += 1.0 * frameTime;
-    ingredient.rotation.y += 1.0 * frameTime;
-    if ( horizontalAngle > doublePi ) {
-      horizontalAngle -= doublePi;
-    }
-    ingredient.position.x = Math.sin( horizontalAngle ) * 130;
+  frameTime = clock.getDelta();
+  horizontalAngle += 0.5 * frameTime;
+  
+  verticalAngle += 1.5 * frameTime;
 
-    verticalAngle += 1.5 * frameTime;
-    if ( verticalAngle > doublePi ) {
-      verticalAngle -= doublePi;
-    }
-    ingredient.position.y = Math.sin( verticalAngle ) * 60;
+  // if ( horizontalAngle > doublePi ) {
+  //   horizontalAngle -= doublePi;
+  // } else if ( verticalAngle > doublePi ) {
+  //   verticalAngle -= doublePi;
+  // } 
+  // console.log(ingredient)
+  switch (ingredient) {
+    case app.bread:
+      app.bread.position.x = Math.sin( horizontalAngle ) * 110;
+      app.bread.position.y = Math.sin( verticalAngle ) * 60;
+      app.bread.rotation.x += 3.7 * frameTime;
+      app.bread.rotation.y += 3.0 * frameTime;
+      break;
+    case app.bread2:
+      app.bread2.position.x = Math.sin( horizontalAngle ) * 89;
+      app.bread2.position.y = Math.sin( verticalAngle ) * 60;
+      app.bread2.rotation.x += 2.5 * frameTime;
+      app.bread2.rotation.y += 3.0 * frameTime;
+      break;
+    case app.tomato: 
+      app.tomato.position.x = Math.sin( horizontalAngle ) * 130;
+      app.tomato.position.y = Math.sin( verticalAngle ) * 60;
+      app.tomato.rotation.x += 1.7 * frameTime;
+      app.tomato.rotation.y += 1.0 * frameTime;
+      break;
+    case app.butter:
+      app.butter.position.x = Math.sin( horizontalAngle ) * 20
+      app.butter.position.y = Math.sin( verticalAngle ) * 40
+      app.butter.rotation.x += 3.0 * frameTime;
+      app.butter.rotation.y += 1.0 * frameTime;
+      break;
+    case app.cheese: 
+      app.cheese.position.x = Math.sin( horizontalAngle ) * 90
+      app.cheese.position.y = Math.sin( verticalAngle ) * 80
+      app.cheese.rotation.x += 3.0 * frameTime;
+      app.cheese.rotation.y += 1.0 * frameTime;
+      break;
+    default:
+      console.log(ingredient)
+  }
 }
 
 
 app.olive = function(status) {
-    if (status === 'add') {
-      var materialNormal = new THREE.MeshNormalMaterial();
-      var bigOliveGeom = new THREE.SphereGeometry(30, 32, 30);
-      var firstMaterial = new THREE.MeshPhongMaterial({
-        color: 0x1E824C,
-      })
-      app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
-      app.bigOliveMesh.scale.set(1, 0.8, 0.8);
+  if (status === 'add') {
+    var materialNormal = new THREE.MeshNormalMaterial();
+    var bigOliveGeom = new THREE.SphereGeometry(30, 32, 30);
+    var firstMaterial = new THREE.MeshPhongMaterial({
+      color: 0x1E824C,
+    })
+    app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
+    app.bigOliveMesh.scale.set(1, 0.8, 0.8);
 
-      var smallOliveGeom = new THREE.SphereGeometry(11, 32, 32);
-      var material = new THREE.MeshPhongMaterial({
-        color: 0xD91E18,
-      });
-      app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
-      // app.smallOliveMesh.wireframe = true;
-      app.smallOliveMesh.position.x = 20;
-      app.smallOliveMesh.position.y = -10;
-      app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
+    var smallOliveGeom = new THREE.SphereGeometry(11, 32, 32);
+    var material = new THREE.MeshPhongMaterial({
+      color: 0xD91E18,
+    });
+    app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
+    // app.smallOliveMesh.wireframe = true;
+    app.smallOliveMesh.position.x = 20;
+    app.smallOliveMesh.position.y = -10;
+    app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
 
-      app.olivesGroup = app.group.add(app.smallOliveMesh,
-        app.bigOliveMesh);
-      app.scene.add(app.olivesGroup);
-    } else {
-      app.scene.remove(app.olivesGroup);
-      // app.scene.remove(app.bigOliveMesh);
-    }
+    app.olivesGroup = app.group.add(app.smallOliveMesh,
+      app.bigOliveMesh);
+    app.scene.add(app.olivesGroup);
+  } else {
+    app.scene.remove(app.olivesGroup);
+    // app.scene.remove(app.bigOliveMesh);
   }
+}
 
-// }
 
 
 
@@ -404,27 +466,31 @@ app.animate = function() {
 
   if (app.tomato) {
     app.float(app.tomato)
-  }
-  if (app.cheese) {
+
+  } else if (app.cheese) {
     app.float(app.cheese)
-  }
-  if (app.ham) {
+
+  } else if (app.ham) {
     app.float(app.ham)
-  }
-  if (app.onion) {
+
+  } else if (app.onion) {
     app.float(app.onion)
-  }
-  if (app.meatball) {
+
+  } else if (app.meatball) {
     app.float(app.meatball)
-  }
-  if (app.butter) {
+
+  } else if (app.butter) {
     app.float(app.butter)
-  }
-  if (app.baconStrip) {
+
+  } else if (app.baconStrip) {
     app.float(app.baconStrip)
-  }
-  if (app.olivesGroup) {
+
+  } else if (app.olivesGroup) {
     app.float(app.olivesGroup)
+
+  } else if (app.bread && app.bread2) {
+    app.float(app.bread)
+    app.float(app.bread2)
   }
 
 
