@@ -130,7 +130,7 @@ app.box = function(status, ingredient) {
     break;
   case 'Cheese':
     if (status === 'add') {
-      var shape = new THREE.BoxGeometry(35, 35, 5)
+      var shape = new THREE.BoxGeometry(35, 35, 1)
 
       var material = new THREE.MeshPhongMaterial({
         // color: 0x1A237E,
@@ -172,7 +172,7 @@ app.cylinder = function (status, ingredient) {
   switch (ingredient) {
   case 'Tomato':
     if (status === 'add') {
-      var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
+      var cylinderShape = new THREE.CylinderGeometry(20, 20, 3, 800);
       var cylinderMaterial = new THREE.MeshPhongMaterial({
         map: THREE.ImageUtils.loadTexture('images/tomatotexture.jpg'),
       });
@@ -257,6 +257,7 @@ app.bacon = function(status) {
       });
       app.baconStrip = new THREE.Mesh(geometry, material);
       app.baconStrip.position.set(-200, 100, 0);
+      app.baconStrip.position.z = -100;
       app.baconStrip.scale.multiplyScalar(1);
       app.group.add(app.baconStrip);
     } else {
@@ -265,11 +266,12 @@ app.bacon = function(status) {
 }
 
 app.text = function() {
-  var geometry = new THREE.TextGeometry( "WHICH WICH?", ({
+  var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
     size: 20,
     height: 2,
-    font: 'carton',
-    weight: 'bold',
+    // curveSegments: 3,
+    font: 'arvo',
+    // weight: 'bold',
     weight: 'normal'
 
   }));
@@ -280,9 +282,9 @@ app.text = function() {
   });
 
   app.heading = new THREE.Mesh (geometry, material);
+  app.heading.position.x = -90;
+  app.heading.position.z = -30;
 
-  app.heading.position.x = -90,
-  app.heading.position.z = -100
   app.scene.add(app.heading);
 }
 
@@ -314,7 +316,7 @@ app.float = function(ingredient) {
       app.butter.rotation.x += 3.0 * frameTime;
       app.butter.rotation.y += 1.0 * frameTime;
       break;
-    case app.cheese: 
+    case app.cheese:
       app.cheese.position.x = Math.sin( horizontalAngle ) * 90
       app.cheese.position.y = Math.sin( verticalAngle ) * 80
       app.cheese.rotation.x += 3.0 * frameTime;
@@ -327,20 +329,20 @@ app.float = function(ingredient) {
       app.ham.rotation.y = Math.sin( horizontalAngle ) * 12
       break;
     case app.onion:
-      app.onion.position.x = Math.sin( horizontalAngle ) * 30 
-      app.onion.position.y = Math.sin( verticalAngle ) * 30 
+      app.onion.position.x = Math.sin( horizontalAngle ) * 30
+      app.onion.position.y = Math.sin( verticalAngle ) * 30
       app.onion.rotation.x = 2.7 * frameTime
       app.onion.rotation.y = Math.sin( horizontalAngle ) * 12
       break;
     case app.olivesGroup:
-      app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30 
-      // app.olivesGroup.position.y = Math.sin( verticalAngle ) * 60 
+      app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30
+      // app.olivesGroup.position.y = Math.sin( verticalAngle ) * 60
       app.olivesGroup.rotation.x = Math.sin( horizontalAngle ) * 12
       app.olivesGroup.rotation.y = 1.5 * 12
       break;
     case app.ball:
-      // app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30 
-      app.ball.position.y = Math.sin( verticalAngle ) * 60 
+      // app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30
+      app.ball.position.y = Math.sin( verticalAngle ) * 60
       app.ball.rotation.x = Math.sin( horizontalAngle ) * 12
       app.ball.rotation.y = 1.5 * 12
       break;
@@ -352,7 +354,7 @@ app.float = function(ingredient) {
 app.olive = function(status) {
   if (status === 'add') {
     var materialNormal = new THREE.MeshNormalMaterial();
-    var bigOliveGeom = new THREE.SphereGeometry(15, 16, 15);
+    var bigOliveGeom = new THREE.SphereGeometry(15, 20, 15);
     var firstMaterial = new THREE.MeshPhongMaterial({
       color: 0x1E824C,
       // wireframe: true
@@ -360,16 +362,16 @@ app.olive = function(status) {
     app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
     app.bigOliveMesh.scale.set(1, 0.8, 0.8);
 
+
     var smallOliveGeom = new THREE.SphereGeometry(6, 16, 16);
     var material = new THREE.MeshPhongMaterial({
       color: 0xD91E18,
     });
     app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
     // app.smallOliveMesh.wireframe = true;
-    app.smallOliveMesh.position.x = 13;
-    app.smallOliveMesh.position.y = 0;
-    app.smallOliveMesh.scale.set(0.6, 0.8, 0.6);
-
+    app.smallOliveMesh.position.x = 11;
+    app.smallOliveMesh.position.y = 5;
+    app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
     app.olivesGroup = app.group.add(app.smallOliveMesh,
       app.bigOliveMesh);
     app.scene.add(app.olivesGroup);
@@ -493,6 +495,19 @@ $('.ingredients input:checkbox').on('click', function() {
     addShape(ingredient)('remove', ingredient);
   }
 });
+
+//reset ingredients from scene
+$('.reset').on('click', function() {
+    var objsToRemove = app.scene.children.slice(3);
+    // var objsToRemove = app.scene.children[3];
+    $.each(objsToRemove, function( i, object ) {
+          app.scene.remove(object);
+    });
+});
+
+// $('.reset').on('click'), function(){
+//   location.reload();
+// };
 
 
 
