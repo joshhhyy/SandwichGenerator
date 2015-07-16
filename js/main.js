@@ -440,13 +440,13 @@ app.animate = function() {
   app.renderer.render(app.scene, app.camera);
 }
 
-app.align = function() {
-  $('.generate').on('click', function() {
-    app.scene.children.position.x = 100;
-    console.log('click');
-  });
-// app.scene.children.position.x = 100;
-};
+// app.align = function() {
+//   $('.generate').on('click', function() {
+//     app.scene.children.position.x = 100;
+//     console.log('click');
+//   });
+// // app.scene.children.position.x = 100;
+// };
 
 
 
@@ -511,7 +511,11 @@ $('.reset').on('click', function() {
     // var objsToRemove = app.scene.children[3];
     $.each(objsToRemove, function( i, object ) {
           app.scene.remove(object);
+
     });
+    app.text();
+    app.box('add', 'Bread');
+    // app.animate();
 });
 
 // $('.reset').on('click'), function(){
