@@ -52,7 +52,7 @@ app.init = function() {
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
 
-  // app.box('add', 'Bread');
+  app.box('add', 'Bread');
   // app.addSphere();
   // app.addTriangle();
   // app.addCylinder();
@@ -130,7 +130,7 @@ app.box = function(status, ingredient) {
     break;
   case 'Cheese':
     if (status === 'add') {
-      var shape = new THREE.BoxGeometry(35, 35, 5)
+      var shape = new THREE.BoxGeometry(35, 35, 1)
 
       var material = new THREE.MeshPhongMaterial({
         // color: 0x1A237E,
@@ -222,7 +222,7 @@ app.cylinder = function (status, ingredient) {
   switch (ingredient) {
   case 'Tomato':
     if (status === 'add') {
-      var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
+      var cylinderShape = new THREE.CylinderGeometry(20, 20, 3, 800);
       var cylinderMaterial = new THREE.MeshPhongMaterial({
         map: THREE.ImageUtils.loadTexture('images/tomatotexture.jpg'),
       });
@@ -439,7 +439,7 @@ app.float = function(ingredient) {
 app.olive = function(status) {
   if (status === 'add') {
     var materialNormal = new THREE.MeshNormalMaterial();
-    var bigOliveGeom = new THREE.SphereGeometry(15, 10, 15);
+    var bigOliveGeom = new THREE.SphereGeometry(15, 20, 15);
     var firstMaterial = new THREE.MeshPhongMaterial({
       color: 0x1E824C,
       // wireframe: true
@@ -448,7 +448,7 @@ app.olive = function(status) {
     app.bigOliveMesh.scale.set(1, 0.8, 0.8);
 
 
-    var smallOliveGeom = new THREE.SphereGeometry(5, 15, 15);
+    var smallOliveGeom = new THREE.SphereGeometry(6, 16, 16);
     var material = new THREE.MeshPhongMaterial({
       color: 0xD91E18,
     });
@@ -580,10 +580,15 @@ $('.ingredients input:checkbox').on('click', function() {
 //reset ingredients from scene
 $('.reset').on('click', function() {
     var objsToRemove = app.scene.children.slice(3);
+    // var objsToRemove = app.scene.children[3];
     $.each(objsToRemove, function( i, object ) {
           app.scene.remove(object);
     });
 });
+
+// $('.reset').on('click'), function(){
+//   location.reload();
+// };
 
 
 
