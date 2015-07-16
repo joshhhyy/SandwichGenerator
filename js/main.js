@@ -323,21 +323,26 @@ app.bacon = function(status) {
 }
 
 app.text = function() {
-  var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
-    size: 30,
+  var geometry = new THREE.TextGeometry( "WHICH WICH?", ({
+    size: 20,
+    height: 2,
+    // curveSegments: 3,
+    font: 'carton',
+    weight: 'bold',
+    weight: 'normal'
+
   }));
 
   var material = new THREE.MeshPhongMaterial({
-    size: 0.1,
-    color: 0x1BBC9B,
-    curveSegments: 1000,
+    bevelEnabled: true,
+    // bevelThickness: 3,
+    // bevelSize: 8,
+    color: 0x007B49
   });
 
-  app.heading = new THREE.Mesh(geometry, material);
-  app.heading.position.x = -110
-  app.heading.position.y = -60
-  app.heading.position.z = -400
+  app.heading = new THREE.Mesh (geometry, material);
 
+  app.heading.position.x = -90,
   app.scene.add(app.heading);
 }
 
