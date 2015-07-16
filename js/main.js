@@ -341,8 +341,8 @@ app.text = function() {
   });
 
   app.heading = new THREE.Mesh (geometry, material);
+  app.heading.position.x = -90;
 
-  app.heading.position.x = -90,
   app.scene.add(app.heading);
 }
 
