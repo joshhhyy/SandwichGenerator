@@ -398,8 +398,8 @@ app.float = function(ingredient) {
       app.bread.rotation.y += 3.0 * frameTime;
       break;
     case app.bread2:
-      app.bread2.position.x = Math.sin( horizontalAngle ) * 89;
-      app.bread2.position.y = Math.sin( verticalAngle ) * 60;
+      app.bread2.position.x = Math.sin( horizontalAngle ) * 49;
+      app.bread2.position.y = Math.sin( verticalAngle ) * 20;
       app.bread2.rotation.x += 2.5 * frameTime;
       app.bread2.rotation.y += 3.0 * frameTime;
       break;
