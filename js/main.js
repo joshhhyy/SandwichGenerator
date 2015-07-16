@@ -2,7 +2,7 @@ var app = app || {};
 THREE.ImageUtils.crossOrigin = '';
 var horizontalAngle = 0;
 var clock = new THREE.Clock();
-var TWO_PI = Math.PI * 2
+var doublePi = Math.PI * 2
 var frameTime = 0
 var verticalAngle = 0
 
@@ -16,7 +16,7 @@ app.init = function() {
   // app.frameTime = 0;
   // app.horizontalAngle = 0;
   // app.verticalAngle = 0;
-  // app.TWO_PI = Math.PI * 2;
+  // app.doublePi = Math.PI * 2;
 
   app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 2000 );
   // THREE.PerspectiveCamera(FIELD OF VIEW, RATIO, NEAR, FAR)
@@ -39,7 +39,7 @@ app.init = function() {
   // app.group.position.y = 50;
   // app.scene.add( app.group );
 
-  app.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1 );
+  app.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.9 );
   //  THREE.HemisphereLight(SKY COLOR, GROUND COLOR, INTENSITY)
   app.scene.add(app.hemiLight)
 
@@ -191,7 +191,7 @@ app.cylinder = function (status, ingredient) {
       });
       // debugger;
       app.tomato = new THREE.Mesh( cylinderShape, cylinderMaterial );
-      app.scene.add(app.tomato);
+      // app.scene.add(app.tomato);
     } else {
       app.scene.remove(app.tomato);
     }
@@ -351,29 +351,35 @@ app.float = function(ingredient) {
     frameTime = clock.getDelta();
     ingredient.rotation.x += 1.0 * frameTime;
     ingredient.rotation.y += 1.0 * frameTime;
-    if ( horizontalAngle > TWO_PI ) {
-      horizontalAngle -= TWO_PI;
+    if ( horizontalAngle > doublePi ) {
+      horizontalAngle -= doublePi;
     }
     ingredient.position.x = Math.sin( horizontalAngle ) * 130;
 
     verticalAngle += 1.5 * frameTime;
-    if ( verticalAngle > TWO_PI ) {
-      verticalAngle -= TWO_PI;
+    if ( verticalAngle > doublePi ) {
+      verticalAngle -= doublePi;
     }
     ingredient.position.y = Math.sin( verticalAngle ) * 60;
 }
 
 
-app.olive = function() {
+app.olive = function(status) {
     if (status === 'add') {
       var materialNormal = new THREE.MeshNormalMaterial();
       var bigOliveGeom = new THREE.SphereGeometry(30, 32, 30);
-      app.bigOliveMesh = new THREE.Mesh(bigOliveGeom);
+      var firstMaterial = new THREE.MeshPhongMaterial({
+        color: 0x1E824C,
+      })
+      app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
       app.bigOliveMesh.scale.set(1, 0.8, 0.8);
 
       var smallOliveGeom = new THREE.SphereGeometry(11, 32, 32);
-      app.smallOliveMesh = new THREE.Mesh(smallOliveGeom);
-      app.smallOliveMesh.wireframe = true;
+      var material = new THREE.MeshPhongMaterial({
+        color: 0xD91E18,
+      });
+      app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
+      // app.smallOliveMesh.wireframe = true;
       app.smallOliveMesh.position.x = 20;
       app.smallOliveMesh.position.y = -10;
       app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
@@ -463,12 +469,10 @@ var addShape = function (ingredient) {
     break;
   case 'Butter':
     return app.box;
-    break;
   case 'Bacon':
     return app.bacon;
   case 'Olive':
     return app.olive;
-    // break;
   }
 }
 
