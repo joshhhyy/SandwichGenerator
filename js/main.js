@@ -290,7 +290,7 @@ app.addBread = function () {
 
 app.torus = function(status) {
   if (status === 'add') {
-    var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
+    var geometry = new THREE.TorusGeometry( 10, 3, 16, 100 );
     var material = new THREE.MeshBasicMaterial({
       color: 0xafafaf,
       map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
@@ -346,6 +346,7 @@ app.bacon = function(status) {
       });
       app.baconStrip = new THREE.Mesh(geometry, material);
       app.baconStrip.position.set(-200, 100, 0);
+      app.baconStrip.position.z = -100;
       app.baconStrip.scale.multiplyScalar(1);
       app.group.add(app.baconStrip);
     } else {
@@ -354,12 +355,12 @@ app.bacon = function(status) {
 }
 
 app.text = function() {
-  var geometry = new THREE.TextGeometry( "WHICH WICH?", ({
+  var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
     size: 20,
     height: 2,
     // curveSegments: 3,
-    font: 'carton',
-    weight: 'bold',
+    font: 'arvo',
+    // weight: 'bold',
     weight: 'normal'
 
   }));
@@ -373,7 +374,7 @@ app.text = function() {
 
   app.heading = new THREE.Mesh (geometry, material);
   app.heading.position.x = -90;
-  app.heading.position.z = -100;
+  app.heading.position.z = -30;
 
   app.scene.add(app.heading);
 }
@@ -430,21 +431,21 @@ app.float = function(ingredient) {
 app.olive = function(status) {
   if (status === 'add') {
     var materialNormal = new THREE.MeshNormalMaterial();
-    var bigOliveGeom = new THREE.SphereGeometry(30, 32, 30);
+    var bigOliveGeom = new THREE.SphereGeometry(15, 10, 15);
     var firstMaterial = new THREE.MeshPhongMaterial({
       color: 0x1E824C,
     })
     app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
     app.bigOliveMesh.scale.set(1, 0.8, 0.8);
 
-    var smallOliveGeom = new THREE.SphereGeometry(11, 32, 32);
+    var smallOliveGeom = new THREE.SphereGeometry(5, 15, 15);
     var material = new THREE.MeshPhongMaterial({
       color: 0xD91E18,
     });
     app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
     // app.smallOliveMesh.wireframe = true;
-    app.smallOliveMesh.position.x = 20;
-    app.smallOliveMesh.position.y = -10;
+    app.smallOliveMesh.position.x = 11;
+    app.smallOliveMesh.position.y = 5;
     app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
 
     app.olivesGroup = app.group.add(app.smallOliveMesh,
