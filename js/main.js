@@ -166,56 +166,6 @@ app.sphere = function(status) {
   }
 }
 
-app.addTriangle = function() {
-  PrismGeometry = function ( vertices, height ) {
-
-    var Shape = new THREE.Shape();
-
-    ( function f( ctx ) {
-
-        ctx.moveTo( vertices[0].x, vertices[0].y );
-        for (var i=1; i < vertices.length; i++) {
-            ctx.lineTo( vertices[i].x, vertices[i].y );
-        }
-        ctx.lineTo( vertices[0].x, vertices[0].y );
-
-    } )( Shape );
-
-    var settings = { };
-    settings.amount = height;
-    settings.bevelEnabled = false;
-    THREE.ExtrudeGeometry.call( this, Shape, settings );
-
-  };
-
-  PrismGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
-
-  var A = new THREE.Vector2( 0, 0 );
-  var B = new THREE.Vector2( 30, 10 );
-  var C = new THREE.Vector2( 50, 70 );
-
-  var height = 32;
-  var geometry = new PrismGeometry( [ A, B, C ], height );
-  var texture = THREE.ImageUtils.loadTexture('images/breadtexture.jpg');
-  texture.repeat.set( 1, 1 );
-
-
-  var material = new THREE.MeshBasicMaterial({
-    // wireframe: true,
-    // wireframeLinewidth: 100,
-    map: texture
-  });
-
-  app.prism1 = new THREE.Mesh( geometry, material );
-  app.prism1.material.map.wrapS = THREE.ClampToEdgeWrapping;
-  app.prism1.material.map.wrapT = THREE.ClampToEdgeWrapping;
-  texture.minFilter = THREE.LinearFilter;
-  app.prism1.rotation.x = -Math.PI  /  2;
-
-  // app.PrismGeometry = new THREE.Mesh(shape, texture);
-  app.scene.add( app.prism1 );
-}
-
 
 
 app.cylinder = function (status, ingredient) {
@@ -248,49 +198,10 @@ app.cylinder = function (status, ingredient) {
 
 }
 
-app.addBread = function () {
-
-  var addShape = function(color, x, y, z, rx, ry, rz, s) {
-    var breadpts = [];
-    breadpts.push(new THREE.Vector2(70, 20));
-    breadpts.push(new THREE.Vector2(80, 90));
-    breadpts.push(new THREE.Vector2(-30, 80));
-    breadpts.push(new THREE.Vector2(-20, -2));
-    // breadpts.push(new THREE.Vector2(10, 0));
-
-    var breadShape = new THREE.Shape();
-    breadShape.moveTo(0, 0);
-    breadShape.splineThru(breadpts);
-
-    var breadExtrude = {
-      amount: 2,
-      bevelEnabled: true,
-      bevelSegments: 2,
-      steps: 4,
-      bevelSize: 1,
-      bevelThickness: 1
-    };
-
-    var breadGeometry = new THREE.ExtrudeGeometry(breadShape, breadExtrude);
-    console.log('you got bread');
-    app.bread = new THREE.Mesh(breadGeometry, new THREE.MeshPhongMaterial({
-      color: color,
-      map: THREE.ImageUtils.loadTexture('images/breadtexture.jpg')
-    }));
-
-    app.bread.position.y = -100
-    app.group.add(app.bread);
-    // app.scene.add( mesh );
-
-  };
-  addShape(0x808080, -50, -100, 0, 0, 0, 0, 1);
-  // addShape(0x808080, -70, -10, 0, 0, 0, 0, 1);
-};
-
 
 app.torus = function(status) {
   if (status === 'add') {
-    var geometry = new THREE.TorusGeometry( 10, 5, 16, 100 );
+    var geometry = new THREE.TorusGeometry( 10, 3, 16, 100 );
     var material = new THREE.MeshBasicMaterial({
       color: 0xafafaf,
       map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
@@ -357,7 +268,6 @@ app.text = function() {
   var geometry = new THREE.TextGeometry( "WHICH WICH?", ({
     size: 20,
     height: 2,
-    // curveSegments: 3,
     font: 'carton',
     weight: 'bold',
     weight: 'normal'
@@ -366,8 +276,6 @@ app.text = function() {
 
   var material = new THREE.MeshPhongMaterial({
     bevelEnabled: true,
-    // bevelThickness: 3,
-    // bevelSize: 8,
     color: 0x007B49
   });
 
@@ -385,7 +293,7 @@ app.float = function(ingredient) {
   switch (ingredient) {
     case app.bread:
       app.bread.position.x = 120
-      app.bread.position.y = Math.sin( verticalAngle ) * 60;
+      app.bread.position.y = Math.sin( verticalAngle ) * -60;
       app.bread.rotation.x += 1.0 * frameTime;
       app.bread.rotation.y += 1.0 * frameTime;
     case app.bread2:
@@ -395,7 +303,7 @@ app.float = function(ingredient) {
       app.bread2.rotation.y += 1.0 * frameTime;
       break;
     case app.tomato:
-      app.tomato.position.x = Math.sin( horizontalAngle ) * 79;
+      app.tomato.position.x = Math.sin( horizontalAngle ) * -79;
       app.tomato.position.y = Math.sin( verticalAngle ) * 40;
       app.tomato.rotation.x += 1.7 * frameTime;
       app.tomato.rotation.y += 1.0 * frameTime;
@@ -429,6 +337,12 @@ app.float = function(ingredient) {
       // app.olivesGroup.position.y = Math.sin( verticalAngle ) * 60 
       app.olivesGroup.rotation.x = Math.sin( horizontalAngle ) * 12
       app.olivesGroup.rotation.y = 1.5 * 12
+      break;
+    case app.ball:
+      // app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30 
+      app.ball.position.y = Math.sin( verticalAngle ) * 60 
+      app.ball.rotation.x = Math.sin( horizontalAngle ) * 12
+      app.ball.rotation.y = 1.5 * 12
       break;
 
   }
@@ -493,8 +407,8 @@ app.animate = function() {
     app.float(app.onion)
   }
 
-  if (app.meatball) {
-    app.float(app.meatball)
+  if (app.ball) {
+    app.float(app.ball)
   }
 
   if (app.butter) {
@@ -517,6 +431,10 @@ app.animate = function() {
 
 
   app.renderer.render(app.scene, app.camera);
+}
+
+app.align = function() {
+
 }
 
 
