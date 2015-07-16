@@ -202,8 +202,8 @@ app.cylinder = function (status, ingredient) {
 app.torus = function(status) {
   if (status === 'add') {
     var geometry = new THREE.TorusGeometry( 10, 3, 16, 100 );
-    var material = new THREE.MeshBasicMaterial({
-      color: 0xafafaf,
+    var material = new THREE.MeshPhongMaterial({
+      color: 0xEB9532,
       map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
     });
     app.onion = new THREE.Mesh( geometry, material );
@@ -282,7 +282,7 @@ app.text = function() {
   });
 
   app.heading = new THREE.Mesh (geometry, material);
-  app.heading.position.x = -90;
+  app.heading.position.x = -100;
   app.heading.position.z = -30;
 
   app.scene.add(app.heading);
@@ -356,7 +356,8 @@ app.olive = function(status) {
     var materialNormal = new THREE.MeshNormalMaterial();
     var bigOliveGeom = new THREE.SphereGeometry(15, 20, 15);
     var firstMaterial = new THREE.MeshPhongMaterial({
-      color: 0x1E824C,
+      // color: 0x1E824C,
+      map: THREE.ImageUtils.loadTexture('images/olivetexture.jpg')
       // wireframe: true
     })
     app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
@@ -369,7 +370,7 @@ app.olive = function(status) {
     });
     app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
     // app.smallOliveMesh.wireframe = true;
-    app.smallOliveMesh.position.x = 11;
+    app.smallOliveMesh.position.x = 10;
     app.smallOliveMesh.position.y = 5;
     app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
     app.olivesGroup = app.group.add(app.smallOliveMesh,
