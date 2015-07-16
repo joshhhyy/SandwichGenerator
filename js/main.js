@@ -485,6 +485,10 @@ $('.ingredients input:checkbox').on('click', function() {
   }
 });
 
+$(.reset).on('click', function() {
+  addShape(ingredients)('remove', ingredient);
+}
+
 
 
 
