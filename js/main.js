@@ -47,7 +47,9 @@ app.init = function() {
   // app.light.position.set( 0, 1, 0 ).normalize();
   // app.scene.add(app.light);
 
-  app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
+
+  //disabled orbit control
+  // app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
 
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
@@ -121,6 +123,7 @@ app.box = function(status, ingredient) {
       });
 
       app.butter = new THREE.Mesh(shape, material);
+      app.butter.position.z = 30;
 
       app.scene.add(app.butter);
 
@@ -172,7 +175,7 @@ app.cylinder = function (status, ingredient) {
   switch (ingredient) {
   case 'Tomato':
     if (status === 'add') {
-      var cylinderShape = new THREE.CylinderGeometry(20, 20, 3, 800);
+      var cylinderShape = new THREE.CylinderGeometry(20, 20, 2, 800);
       var cylinderMaterial = new THREE.MeshPhongMaterial({
         map: THREE.ImageUtils.loadTexture('images/tomatotexture.jpg'),
       });
@@ -184,11 +187,12 @@ app.cylinder = function (status, ingredient) {
     break;
   case 'Ham':
     if (status === 'add') {
-      var cylinderShape = new THREE.CylinderGeometry(20, 20, 0.5, 800);
+      var cylinderShape = new THREE.CylinderGeometry(20, 20, 1, 800);
       var cylinderMaterial = new THREE.MeshPhongMaterial({
         map: THREE.ImageUtils.loadTexture('images/hamtexture.png'),
       });
       app.ham = new THREE.Mesh( cylinderShape, cylinderMaterial );
+      app.ham.position.z = -30;
       app.scene.add(app.ham);
     } else {
       app.scene.remove(app.ham);
@@ -207,7 +211,7 @@ app.torus = function(status) {
       map: THREE.ImageUtils.loadTexture('images/onion.jpg'),
     });
     app.onion = new THREE.Mesh( geometry, material );
-    // app.onion.position.y = 300;
+    app.onion.position.z = 50;
     app.scene.add(app.onion);
   } else {
     app.scene.remove(app.onion);
@@ -268,7 +272,7 @@ app.bacon = function(status) {
 app.text = function() {
   var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
     size: 20,
-    height: 2,
+    height: 4,
     // curveSegments: 3,
     font: 'arvo',
     // weight: 'bold',
@@ -278,12 +282,12 @@ app.text = function() {
 
   var material = new THREE.MeshPhongMaterial({
     bevelEnabled: true,
-    color: 0x007B49
+    color: 0xF4B350
   });
 
   app.heading = new THREE.Mesh (geometry, material);
   app.heading.position.x = -100;
-  app.heading.position.z = -30;
+  app.heading.position.z = -60;
 
   app.scene.add(app.heading);
 }
@@ -436,9 +440,13 @@ app.animate = function() {
   app.renderer.render(app.scene, app.camera);
 }
 
-app.align = function() {
-
-}
+// app.align = function() {
+//   $('.generate').on('click', function() {
+//     app.scene.children.position.x = 100;
+//     console.log('click');
+//   });
+// // app.scene.children.position.x = 100;
+// };
 
 
 
@@ -503,7 +511,11 @@ $('.reset').on('click', function() {
     // var objsToRemove = app.scene.children[3];
     $.each(objsToRemove, function( i, object ) {
           app.scene.remove(object);
+
     });
+    app.text();
+    app.box('add', 'Bread');
+    // app.animate();
 });
 
 // $('.reset').on('click'), function(){
