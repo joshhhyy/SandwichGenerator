@@ -461,42 +461,12 @@ $('.reset').on('click', function() {
     var objsToRemove = app.scene.children.slice(3);
     $.each(objsToRemove, function( i, object ) {
           app.scene.remove(object);
-
     });
     app.text();
     app.box('add', 'Bread');
-
 });
 
 
-
-
-
-
-
-
-
-/* NOTES
-
-app.init needs:
-  - A scene
-  - A camera
-  - A renderer which combines the previous two together.
-  - domElement contains everything
-
-app.addBox needs:
-  - Shape
-  - Material
-  - Mesh
-
-MISC:
-
-requestionAnimationFrame:
-  - reduced redraws
-  - Active only. Only makes animations when tab or window is focused on.
-  - Checks max fps and uses that
-
-    addShape(ingredient);*/
 
 
 

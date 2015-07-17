@@ -1,25 +1,28 @@
-### Project 3: Sandwich Generator
+# Project 3: Sandwich Generator
 
-### Things to do:
+### Group 
+  - Josh Bonador
+  - Stella Halena
 
-  - Have shapes on a specfic path
-  - Create Generate Sandwich button (puts all the ingredients together)
-  - Have ingredients correctly aligned when generate sandwich is selected
-  - Once generated, disable ingredient option
-  - Reset button to start sandwich again
-  - Visually similar ingredients texture (illos)
-  - Scene of a table with a plate
-  -
+### Site Overview
+
+'Which 'Wich' Is a goofy three.js app aimed to generate sandwiches and their ingredients based on the user's preferences. Ingredients are added and removed via checkboxes and are then floated along a specific path in between two pieces of bread. 
+
+### Tools Used
+
+  - Javascript
+  - Three.js
+  - HTML
+  - CSS
+  - jQuery
+
+### Features to implement 
+
+  - Align ingredients and bread together to form the sandwich structure
+  - Adding colour to the checkbox 
+  - Add a 'scene floor' that resembles a dining plate and table 
+  
 
 
-
-### Done
-  - Link tickboxes to shape generation
-  - Title heading
-  - Find out how to make custom shapes
-
-
-
-
-
+  
 
