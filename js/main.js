@@ -13,17 +13,12 @@ app.init = function() {
   app.width = window.innerWidth;
   app.height = window.innerHeight;
   app.clock = new THREE.Clock();
-  // app.frameTime = 0;
-  // app.horizontalAngle = 0;
-  // app.verticalAngle = 0;
-  // app.doublePi = Math.PI * 2;
 
   app.camera = new THREE.PerspectiveCamera(45, app.width / app.height, 1, 2000 );
   // THREE.PerspectiveCamera(FIELD OF VIEW, RATIO, NEAR, FAR)
   // Near and Far specify the range which things get rendered. (in 'units')
 
   app.camera.position.z = 200;
-  // app.camera.position.set( 0, 150, 750 );
 
   app.scene = new THREE.Scene();
   app.scene.add(app.camera);
@@ -35,34 +30,16 @@ app.init = function() {
   app.group = new THREE.Group();
   app.group.position.y = 30;
   app.scene.add( app.group );
-  // app.group = new THREE.Group();
-  // app.group.position.y = 50;
-  // app.scene.add( app.group );
 
   app.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.9 );
   //  THREE.HemisphereLight(SKY COLOR, GROUND COLOR, INTENSITY)
   app.scene.add(app.hemiLight)
 
-  // app.light = new THREE.DirectionalLight( 0xFFFFFF);
-  // app.light.position.set( 0, 1, 0 ).normalize();
-  // app.scene.add(app.light);
-
-
-  //disabled orbit control
-  // app.controls = new THREE.OrbitControls(app.camera, app.renderer.domElement);
-
   document.body.appendChild(app.renderer.domElement);
   // Throw what the renderer is looking at on the page
 
   app.box('add', 'Bread');
-  // app.addSphere();
-  // app.addTriangle();
-  // app.addCylinder();
-  // app.addBread();
-  // app.addBacon();
-  // app.addTorus();
   app.text();
-  // app.addOlive();
   app.animate();
   app.renderer.render(app.scene, app.camera)
 }
@@ -118,7 +95,6 @@ app.box = function(status, ingredient) {
       var shape = new THREE.BoxGeometry(10, 10, 40)
       // THREE.BoxGeometry(WIDTH, HEIGHT, BREADTH)
       var material = new THREE.MeshPhongMaterial({
-        // color: 0x1A237E,
         map: THREE.ImageUtils.loadTexture('images/buttertexture.jpg')
       });
 
@@ -136,7 +112,6 @@ app.box = function(status, ingredient) {
       var shape = new THREE.BoxGeometry(35, 35, 1)
 
       var material = new THREE.MeshPhongMaterial({
-        // color: 0x1A237E,
         map: THREE.ImageUtils.loadTexture('images/cheesetexture.jpg')
       });
 
@@ -155,7 +130,6 @@ app.sphere = function(status) {
     // THREE.SphereGeometry(RADIUS, SEGMENTS, RINGS)
 
     var material = new THREE.MeshPhongMaterial({
-      // color: 0xEC407A,
       wireframe: true,
       wireframeLinewidth: 4,
       map: THREE.ImageUtils.loadTexture('images/meatballtexture.jpg')
@@ -273,9 +247,7 @@ app.text = function() {
   var geometry = new THREE.TextGeometry( "WHICH 'WICH?", ({
     size: 20,
     height: 4,
-    // curveSegments: 3,
     font: 'arvo',
-    // weight: 'bold',
     weight: 'normal'
 
   }));
@@ -340,12 +312,10 @@ app.float = function(ingredient) {
       break;
     case app.olivesGroup:
       app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30
-      // app.olivesGroup.position.y = Math.sin( verticalAngle ) * 60
       app.olivesGroup.rotation.x = Math.sin( horizontalAngle ) * 12
       app.olivesGroup.rotation.y = 1.5 * 12
       break;
     case app.ball:
-      // app.olivesGroup.position.x = Math.sin( verticalAngle ) * 30
       app.ball.position.y = Math.sin( verticalAngle ) * 60
       app.ball.rotation.x = Math.sin( horizontalAngle ) * 12
       app.ball.rotation.y = 1.5 * 12
@@ -360,9 +330,7 @@ app.olive = function(status) {
     var materialNormal = new THREE.MeshNormalMaterial();
     var bigOliveGeom = new THREE.SphereGeometry(15, 20, 15);
     var firstMaterial = new THREE.MeshPhongMaterial({
-      // color: 0x1E824C,
       map: THREE.ImageUtils.loadTexture('images/olivetexture.jpg')
-      // wireframe: true
     })
     app.bigOliveMesh = new THREE.Mesh(bigOliveGeom, firstMaterial);
     app.bigOliveMesh.scale.set(1, 0.8, 0.8);
@@ -373,7 +341,6 @@ app.olive = function(status) {
       color: 0xD91E18,
     });
     app.smallOliveMesh = new THREE.Mesh(smallOliveGeom, material);
-    // app.smallOliveMesh.wireframe = true;
     app.smallOliveMesh.position.x = 10;
     app.smallOliveMesh.position.y = 5;
     app.smallOliveMesh.scale.set(0.7, 0.8, 0.6);
@@ -440,21 +407,8 @@ app.animate = function() {
   app.renderer.render(app.scene, app.camera);
 }
 
-// app.align = function() {
-//   $('.generate').on('click', function() {
-//     app.scene.children.position.x = 100;
-//     console.log('click');
-//   });
-// // app.scene.children.position.x = 100;
-// };
-
-
-
 window.onload = app.init;
-// window.addEventListener('mousemove', function(event) {
-//   console.log(event.x, event.y);
 
-// });
 
 window.addEventListener('resize', function() {
   app.width = window.innerWidth;
@@ -480,9 +434,6 @@ var addShape = function (ingredient) {
     return app.box;
   case 'Ham':
     return app.cylinder;
-  case 'Chicken':
-    // app.addChicken();
-    break;
   case 'Butter':
     return app.box;
   case 'Bacon':
@@ -508,19 +459,14 @@ $('.ingredients input:checkbox').on('click', function() {
 //reset ingredients from scene
 $('.reset').on('click', function() {
     var objsToRemove = app.scene.children.slice(3);
-    // var objsToRemove = app.scene.children[3];
     $.each(objsToRemove, function( i, object ) {
           app.scene.remove(object);
 
     });
     app.text();
     app.box('add', 'Bread');
-    // app.animate();
-});
 
-// $('.reset').on('click'), function(){
-//   location.reload();
-// };
+});
 
 
 
