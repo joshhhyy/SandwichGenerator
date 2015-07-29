@@ -461,13 +461,10 @@ $('.reset').on('click', function() {
     var objsToRemove = app.scene.children.slice(3);
     $.each(objsToRemove, function( i, object ) {
           app.scene.remove(object);
-
     });
     app.text();
     app.box('add', 'Bread');
-
 });
-
 
 
 
