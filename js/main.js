@@ -366,7 +366,7 @@ app.animate = function() {
 
 
   if (app.tomato) {
-    app.float(app.tomato)
+    app.float(app.tomato);
   }
 
   if (app.cheese) {
@@ -374,27 +374,27 @@ app.animate = function() {
   }
 
   if (app.ham) {
-    app.float(app.ham)
+    app.float(app.ham);
   }
 
   if (app.onion) {
-    app.float(app.onion)
+    app.float(app.onion);
   }
 
   if (app.ball) {
-    app.float(app.ball)
+    app.float(app.ball);
   }
 
   if (app.butter) {
-    app.float(app.butter)
+    app.float(app.butter);
   }
 
   if (app.baconStrip) {
-    app.float(app.baconStrip)
+    app.float(app.baconStrip);
   }
 
   if (app.olivesGroup) {
-    app.float(app.olivesGroup)
+    app.float(app.olivesGroup);
   }
 
   if (app.bread && app.bread2) {
@@ -471,3 +471,26 @@ $('.reset').on('click', function() {
 
 
 
+
+
+/* NOTES
+
+app.init needs:
+  - A scene
+  - A camera
+  - A renderer which combines the previous two together.
+  - domElement contains everything
+
+app.addBox needs:
+  - Shape
+  - Material
+  - Mesh
+
+MISC:
+
+requestionAnimationFrame:
+  - reduced redraws
+  - Active only. Only makes animations when tab or window is focused on.
+  - Checks max fps and uses that
+
+    addShape(ingredient);*/
